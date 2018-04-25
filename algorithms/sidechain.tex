@@ -1,0 +1,65 @@
+\begin{figure}[t]
+\begin{algorithm}[H]
+    \caption{\label{alg.sidechain} The smart contract skeleton for an
+             asset transferring sidechain}
+    \begin{algorithmic}[1]
+        \Contract{\textsf{sidechain}$_1$}
+            \Function{\sf constructor}{$\mathcal{G}_2$}
+                \Let{{\sf this.}\mathcal{G}_2}{\mathcal{G}_2}
+                \Comment{Initialize with the genesis block of the remote chain}
+            \EndFunction
+            \Payable{\sf deposit}{{\sf target}}
+                \CommentLine{Emit an event to be picked up by the remote contract}
+                \State{\textsf{emit}
+                       \textsf{Deposited}$_1$(\textsf{target}, \textsf{msg.sender})}
+            \EndPayable
+            \Function{\sf withdraw}{$\pi$}
+                \CommentLine{Validate and deconstruct data of proof $\pi$}
+                \Let{
+                    (
+                      \textsf{valid},
+                      \textsf{amount},
+                      \textsf{target}
+                    )
+                }{\textsf{validate-proof}(\pi, \mathcal{G}_2)}
+                \If{$\lnot \textsf{valid}
+                     \lor \textsf{msg.sender} \neq \textsf{target}$}
+                    \State\Return{$\bot$}
+                \EndIf
+                \State\textsf{msg.sender.send(\textsf{amount})}
+            \EndFunction
+        \EndContract
+        \Contract{\textsf{sidechain}$_2$}
+            \State\textsf{mapping}(\textsf{address} $\Rightarrow$ \textsf{int}) \textsf{balances}
+            \Function{\sf constructor}{$\mathcal{G}_1$}
+                \Let{{\sf this.}\mathcal{G}_1}{\mathcal{G}_1}
+                \Comment{Initialize with the genesis block of the remote chain}
+            \EndFunction
+            \Function{\sf deposit}{{\sf target}, {\sf amount}}
+                \CommentLine{Charge account of sender}
+                \Let{\textsf{balances[msg.sender]}}{\textsf{balances[msg.sender]} - \textsf{amount}}
+                \CommentLine{Emit an event to be picked up by the remote contract}
+                \State{\textsf{emit}
+                       \textsf{Deposited}$_2$(\textsf{target}, \textsf{msg.sender})}
+            \EndFunction
+            \Function{\sf withdraw}{$\pi$}
+                \CommentLine{Validate and deconstruct data of proof $\pi$}
+                \Let{
+                    (
+                      \textsf{valid},
+                      \textsf{amount},
+                      \textsf{target}
+                    )
+                }{\textsf{validate-proof}(\pi, \mathcal{G}_1)}
+                \If{$\lnot \textsf{valid}
+                     \lor \textsf{msg.sender} \neq \textsf{target}$}
+                    \State\Return{$\bot$}
+                \EndIf
+                \CommentLine{Credit account of sender}
+                \Let{\textsf{balances[msg.sender]}}{\textsf{balances[msg.sender]} + \textsf{amount}}
+            \EndFunction
+        \EndContract
+        \vskip8pt
+    \end{algorithmic}
+\end{algorithm}
+\end{figure}
