@@ -55,5 +55,20 @@ to be mined on top of it. It is possible that $k_1 \neq k_2$ because of
 different guarantees of different networks such as a difference in block
 generation time or network synchronicity.
 
-Our construction will be fully decentralized and not require any sort of
+Using this basic functionality of event information exchange between
+blockchains, we can construct two-way pegged sidechains. In such a construction,
+an asset that exists on one blockchain, either as a \emph{native asset}, such as
+ether in Ethereum, or as a \emph{token asset}, such as ICO or ERC20 tokens in
+Ethereum, will gain the ability to be \emph{moved} to a different blockchain,
+for example Ethereum Classic. We will use the example of moving ether from the
+Ethereum Blockchain and into the Ethereum Classic blockchain. Such an action is
+different from \emph{exchanging} ether (ETH), the native token of the Ethereum
+blockchain, with ether classic (ETC), the native token of the Ethereum Classic
+blockchain. Instead, the asset retains its nature in that it maintains its price
+and its ability to be used for the same purposes, while being governed by the
+rules of the new blockchain, such as improved speed, limited fees, or better
+features. Furthermore, no counterparty is required to exchange the asset; it is
+something a party can do on its own.
+
+Our constructions are fully decentralized and not require any sort of
 federation.
