@@ -90,24 +90,25 @@ catastrophic security issue occurs in the \emph{computation layer}, the
 problems in blockchain space~\cite{bitcoinng,sompolinsky2013accelerating}.
 Sidechains are a trivial way to \emph{shard} a blockchain system into multiple
 blockchains, achieving higher transaction throughput. This method can be
-combined with existing . Similar to the example
-above, a system which wishes to achieve these scalability gains would have one
-baseline blockchain designated as their \emph{settlement layer}. In this
-construction, the settlement layer is the only blockchain which issues currency.
-In addition, a separate blockchain is created on an as-needed basis, which does
-not have its own currency, but can exchange coins with the parent
-\emph{settlement layer} using two-way pegged sidechains. The creation of children
-blockchains can even be user-initiated. If transactions occur intra-chain, they
-do not need to touch the settlement layer. Inter-chain transactions between two
-different children chains can occur by first moving coins from the source
-blockchain to the settlement layer with one transaction and subsequently from
-the settlement layer to the target blockchain with another. In order for this
-system to successfully scale, most transactions need to be confined within a
-single blockchain. This can be achieved if, for instance, each blockchain
-created is specific to a particular industry. The suppliers and consumers of an
-industry can then interact with each other within their designated blockchain
-and only need to move their capital to the settlement layer in order to interact
-with suppliers or consumers across industries.
+combined with existing sharding techniques such as Bitcoin-NG~\cite{bitcoinng}
+applied independently on each blockchain. Similar to the example above, a system
+which wishes to achieve these scalability gains would have one baseline
+blockchain designated as their \emph{settlement layer}. In this construction,
+the settlement layer is the only blockchain which issues currency. In addition,
+a separate blockchain is created on an as-needed basis, which does not have its
+own currency, but can exchange coins with the parent \emph{settlement layer}
+using two-way pegged sidechains. The creation of children blockchains can even
+be user-initiated. If transactions occur intra-chain, they do not need to touch
+the settlement layer. Inter-chain transactions between two different children
+chains can occur by first moving coins from the source blockchain to the
+settlement layer with one transaction and subsequently from the settlement layer
+to the target blockchain with another. In order for this system to successfully
+scale, most transactions need to be confined within a single blockchain. This
+can be achieved if, for instance, each blockchain created is specific to a
+particular industry. The suppliers and consumers of an industry can then
+interact with each other within their designated blockchain and only need to
+move their capital to the settlement layer in order to interact with suppliers
+or consumers across industries.
 
 \noindent
 \textbf{Legacy interoperability. } A fundamental problem of blockchain systems
