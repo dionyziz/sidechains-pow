@@ -1,65 +1,94 @@
-\begin{figure}[t]
 \begin{algorithm}[H]
-    \caption{\label{alg.sidechain} The smart contract skeleton for an
-             asset transferring sidechain}
+    \caption{\label{alg.sidechain1} The smart contract skeleton for an
+             asset transferring sidechain on the payable side (1);
+             this contract utilizes the base \textsf{crosschain} contract}
     \begin{algorithmic}[1]
-        \Contract{\textsf{sidechain}$_1$}
-            \Function{\sf constructor}{$\mathcal{G}_2$}
-                \Let{{\sf this.}\mathcal{G}_2}{\mathcal{G}_2}
-                \Comment{Initialize with the genesis block of the remote chain}
+        \Contract{\textsf{sidechain}$_1$\text{ extends }\textsf{crosschain}$_{k,m,z}$}
+            \Let{\textsf{initialized}}{\emph{false}}
+            \Function{\sf initialize}{$\mathcal{G}_2$, \textsf{sidechain}$_2$}
+                \If{$\lnot \textsf{initialized}$}
+                    \Let{\textsf{ctr}}{0}
+                    \State\textsf{crosschain.initialize}$(\mathcal{G}_2)$
+                    \Comment{Initialize with the remote chain genesis block}
+                    \Let{\textsf{initialized}}{\emph{true}}
+                    \Let{{\sf this.sidechain}_2}{\textsf{sidechain}_2}
+                \EndIf
             \EndFunction
             \Payable{\sf deposit}{{\sf target}}
                 \CommentLine{Emit an event to be picked up by the remote contract}
+                \Let{\textsf{ctr}}{\textsf{ctr} + 1}
                 \State{\textsf{emit}
-                       \textsf{Deposited}$_1$(\textsf{target}, \textsf{msg.sender})}
+                       \textsf{Deposited}$_1$(\textsf{target},
+                                              \textsf{msg.sender},
+                                              \textsf{msg.value},
+                                              \textsf{ctr})}
             \EndPayable
-            \Function{\sf withdraw}{$\pi$}
-                \CommentLine{Validate and deconstruct data of proof $\pi$}
-                \Let{
-                    (
-                      \textsf{valid},
-                      \textsf{amount},
-                      \textsf{target}
-                    )
-                }{\textsf{validate-proof}(\pi, \mathcal{G}_2)}
-                \If{$\lnot \textsf{valid}
-                     \lor \textsf{msg.sender} \neq \textsf{target}$}
+            \Function{\sf withdraw}{$\textsf{valid}, \textsf{amount}, \textsf{target}, \textsf{ctr}$}
+                \CommentLine{Validate that event took place on remote chain}
+                \If{$\lnot
+                         \textsf{event-exists}(
+                             (
+                                \textsf{sidechain}_2,
+                                \textsf{Deposited}_2,
+                                (\textsf{valid}, \textsf{amount}, \textsf{target}, \textsf{ctr})
+                             )
+                         )$}
                     \State\Return{$\bot$}
                 \EndIf
-                \State\textsf{msg.sender.send(\textsf{amount})}
-            \EndFunction
-        \EndContract
-        \Contract{\textsf{sidechain}$_2$}
-            \State\textsf{mapping}(\textsf{address} $\Rightarrow$ \textsf{int}) \textsf{balances}
-            \Function{\sf constructor}{$\mathcal{G}_1$}
-                \Let{{\sf this.}\mathcal{G}_1}{\mathcal{G}_1}
-                \Comment{Initialize with the genesis block of the remote chain}
-            \EndFunction
-            \Function{\sf deposit}{{\sf target}, {\sf amount}}
-                \CommentLine{Charge account of sender}
-                \Let{\textsf{balances[msg.sender]}}{\textsf{balances[msg.sender]} - \textsf{amount}}
-                \CommentLine{Emit an event to be picked up by the remote contract}
-                \State{\textsf{emit}
-                       \textsf{Deposited}$_2$(\textsf{target}, \textsf{msg.sender})}
-            \EndFunction
-            \Function{\sf withdraw}{$\pi$}
-                \CommentLine{Validate and deconstruct data of proof $\pi$}
-                \Let{
-                    (
-                      \textsf{valid},
-                      \textsf{amount},
-                      \textsf{target}
-                    )
-                }{\textsf{validate-proof}(\pi, \mathcal{G}_1)}
-                \If{$\lnot \textsf{valid}
-                     \lor \textsf{msg.sender} \neq \textsf{target}$}
-                    \State\Return{$\bot$}
-                \EndIf
-                \CommentLine{Credit account of sender}
-                \Let{\textsf{balances[msg.sender]}}{\textsf{balances[msg.sender]} + \textsf{amount}}
+                \State\textsf{msg.sender.send}(\textsf{amount})
             \EndFunction
         \EndContract
         \vskip8pt
     \end{algorithmic}
 \end{algorithm}
-\end{figure}
+\begin{algorithm}[H]
+    \caption{\label{alg.sidechain2} The smart contract skeleton for an
+             asset transferring sidechain on the ERC20 side (2);
+             this contract utilizes the base \textsf{crosschain} contract
+             as well as \textsf{ERC20} functionality}
+    \begin{algorithmic}[1]
+        \Contract{\textsf{sidechain}$_2$\text{ extends }\textsf{crosschain}$_{k,m,z}$; \textsf{ERC20}}
+            \State\textsf{mapping}(\textsf{address} $\Rightarrow$ \textsf{int}) \textsf{balances}
+            \Let{\textsf{initialized}}{\emph{false}}
+            \Function{\sf initialize}{$\mathcal{G}_1$, \textsf{sidechain}$_1$}
+                \If{$\lnot \textsf{initialized}$}
+                    \Let{\textsf{ctr}}{0}
+                    \State\textsf{crosschain.initialize}$(\mathcal{G}_1)$
+                    \Comment{Initialize with the remote chain genesis block}
+                    \Let{\textsf{initialized}}{\emph{true}}
+                    \Let{{\sf this.sidechain}_1}{\textsf{sidechain}_1}
+                \EndIf
+            \EndFunction
+            \Function{\sf deposit}{{\sf target}, {\sf amount}}
+                \CommentLine{Charge account of sender}
+                \If{$\textsf{balances[msg.sender]} < \textsf{amount}$}
+                    \State\Return{$\bot$}
+                \EndIf
+                \Let{\textsf{balances[msg.sender]}}{\textsf{balances[msg.sender]} - \textsf{amount}}
+                \CommentLine{Emit an event to be picked up by the remote contract}
+                \Let{\textsf{ctr}}{\textsf{ctr} + 1}
+                \State{\textsf{emit}
+                       \textsf{Deposited}$_2$(\textsf{target},
+                                              \textsf{msg.sender},
+                                              \textsf{amount},
+                                              \textsf{ctr})}
+            \EndFunction
+            \Function{\sf withdraw}{$\textsf{valid}, \textsf{amount}, \textsf{target}, \textsf{ctr}$}
+                \CommentLine{Validate that event took place on remote chain}
+                \If{$\lnot
+                         \textsf{event-exists}(
+                             (
+                                \textsf{sidechain}_1,
+                                \textsf{Deposited}_1,
+                                (\textsf{valid}, \textsf{amount}, \textsf{target}, \textsf{ctr})
+                             )
+                         )$}
+                    \State\Return{$\bot$}
+                \EndIf
+                \CommentLine{Credit target account}
+                \Let{\textsf{balances[target]}}{\textsf{balances[target]} + \textsf{amount}}
+            \EndFunction
+        \EndContract
+        \vskip8pt
+    \end{algorithmic}
+\end{algorithm}
