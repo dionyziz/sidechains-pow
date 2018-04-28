@@ -3,12 +3,154 @@
 We now describe some of the possible applications of sidechains.
 
 \noindent
-\textbf{Remote ICO. } In this application, a group wants to fundraise by
-performing an ICO~\cite{ico}.
+\textbf{Remote ICOs. } In this application, a group wants to fundraise by
+performing an ICO~\cite{ico}. They wish to sell their application tokens on a
+certain \emph{target} blockchain with some desirable features. For example,
+Ethereum Classic has a different virtual machine for code execution, which may
+be faster for certain applications. At the same time, investors who wish to
+purchase application tokens may be holding their cryptocurrency they wish to pay
+with on a different \emph{source} blockchain with some different desirable
+features. For example, historically Ethereum has been more popular than Ethereum
+Classic in storing investor funds and access to purchase Ethereum is generally
+easier. In this context, instead of trading Ethereum for Ethereum Classic, the
+investors can directly pay in Ethereum and receive their ICO tokens on the
+Ethereum Classic blockchain.
 
-% remote ICO
-% atomic swaps
-% cardano mainchain/sidechain
-% scalability (trivial sharding)
-% interoperability with private blockchains (regulator compliance)
-% upgradability
+The course of action would be as follows: Initially, the fundraising entity
+creates a \emph{fund raiser} smart contract on the \emph{source blockchain}, in
+our example the Ethereum blockchain. The fund raiser smart contract contains a
+payable \emph{deposit} method to which it will receive the investments in
+ether. The fundraising entity also creates a \emph{token generator} smart
+contract on the \emph{target blockchain}, in our example the Ethereum Classic
+blockchain. The \emph{token generator} contract is initialized with the source
+blockchain genesis hash and the \emph{fund raiser} smart contract address; as
+such the contracts must be created in this order. The \emph{token generator}
+contract contains a \emph{withdraw} method which allows receiving the ICO
+tokens. The fundraising entity then advertises both smart contracts and allows
+investors to inspect them.
+
+An investor subsequently deposits ether into the \emph{fund raiser} smart
+contract's \emph{deposit} method. That deposit emits an event containing the
+amount deposited and a chosen target address as parameters. The investor
+subsequently generates a proof-of-proof $\pi$ for the event firing and submits
+it to the \emph{withdraw} method of the \emph{token generator} function. Upon
+verification of $\pi$, the investor receives their ICO tokens. In this sense,
+this application is a special case of a \emph{one-way peg} with some extra
+rules such as a limited timeframe or a potentially changing price.
+
+\noindent
+\textbf{Atomic swaps. } In this application, two participants wish to exchange
+coins on two different chains, for example Ethereum for Ethereum Classic. Assume
+Alice wishes to pay Bob in Ethereum and Bob wishes to pay Alice in Ethereum
+Classic. They wish to do this while distrusting each other and without a
+centralized exchange. While atomic swaps are already possible using hash
+locks~\cite{atomicswaps,herlihy2018atomic}, our construction is an alternative
+way of achieving them. In order to achieve it, one contract is created, on the
+\emph{target} blockchain, in our example Ethereum, and is made aware of the
+remote genesis block as well as address on the \emph{source} blockchain, in our
+case Alice's Ethereum Classic address. Then, Alice deposits ether into the
+\emph{deposit} function of the smart contract that sits on the \emph{source}
+blockchain. This ether remains locked for a designated period of time. In the
+meantime, Bob pays Alice in Ethereum Classic by creating a regular transaction
+on the Ethereum Classic blockchain. He then generates a proof-of-proof $\pi$
+that this transaction took place and is paying into Alice's account. By
+submitting $\pi$ into the \emph{withdraw} function of the smart contract that
+sits on the \emph{source} blockchain, Bob is able to receive his ether payment,
+contingent on the fact that he has paid Alice. In case Bob aborts the protocol,
+Alice is able to withdraw her money from the \emph{source} blockchain smart
+contract by calling an \emph{abort} function, which is only callable as soon as
+a sufficient number of blocks have passed. As long as Bob cooperates within a
+timely manner, Alice is unable to call \emph{abort} due to the timelock, and
+hence the protocol is atomic.
+
+\noindent
+\textbf{Firewalling complex blockchains. } The two most popular cryptocurrencies
+are currently Bitcoin and Ethereum. The popularity of Bitcoin stems from the
+fact that it has maintained stable behavior and can be relied on for security.
+Their features are limited and their codebase is updated in a careful manner. On
+the other hand, Ethereum innovates quickly and is Turing-complete. Hence,
+Bitcoin is often used as a \emph{savings accounts} platform because it is safe,
+while Ethereum is used as a \emph{checking accounts} platform because it is
+feature rich. The problem stems from the fact that exchanges between these two
+chains are constantly needed and are prone to volatility and market fees.
+However, with sidechains, it is possible to get the best of both worlds. To
+solve this problem in a new coin, a blockchain system consisting of \emph{two
+blockchains} is created. The Bitcoin-like blockchain, or \emph{settlement
+layer}, contains limited features and a codebase which is easily auditable. The
+Ethereum-like blockchain, or \emph{computation layer}, is feature-rich and its
+codebase is larger but harder to audit. The \emph{settlement layer} then issues
+currency which can be transferred to the \emph{computation layer} (which does
+not have its own currency) and back using two-way pegged sidechains, without
+paying market fees or being subject to exchange volatility. In case a
+catastrophic security issue occurs in the \emph{computation layer}, the
+\emph{settlement layer} remains macroeconomically protected.
+
+\noindent
+\textbf{Scaling with sidechains. } Scalability is one of the most prominent
+problems in blockchain space~\cite{bitcoinng,sompolinsky2013accelerating}.
+Sidechains are a trivial way to \emph{shard} a blockchain system into multiple
+blockchains, achieving higher transaction throughput. This method can be
+combined with existing . Similar to the example
+above, a system which wishes to achieve these scalability gains would have one
+baseline blockchain designated as their \emph{settlement layer}. In this
+construction, the settlement layer is the only blockchain which issues currency.
+In addition, a separate blockchain is created on an as-needed basis, which does
+not have its own currency, but can exchange coins with the parent
+\emph{settlement layer} using two-way pegged sidechains. The creation of children
+blockchains can even be user-initiated. If transactions occur intra-chain, they
+do not need to touch the settlement layer. Inter-chain transactions between two
+different children chains can occur by first moving coins from the source
+blockchain to the settlement layer with one transaction and subsequently from
+the settlement layer to the target blockchain with another. In order for this
+system to successfully scale, most transactions need to be confined within a
+single blockchain. This can be achieved if, for instance, each blockchain
+created is specific to a particular industry. The suppliers and consumers of an
+industry can then interact with each other within their designated blockchain
+and only need to move their capital to the settlement layer in order to interact
+with suppliers or consumers across industries.
+
+\noindent
+\textbf{Legacy interoperability. } A fundamental problem of blockchain systems
+is that they are difficult to operate within the regulatory framework of
+governments. This makes it difficult to move capital between legacy banking and
+blockchains, as they stand at two extremes: Legacy banking is heavily regulated
+to control every transaction, while blockchains, at least at the transaction
+level, can be used despite regulation that may exist, which can remain
+unenforceable, especially for anonymous users. Hence, banks are reluctant to
+interoperate with blockchains. An intermediate solution can be reached with
+sidechains. A parent blockchain can be created which is completely
+decentralized. Subsequently, each bank, regulator, or government can operate a
+private or semi-private blockchain~\cite{danezis2015centrally} as a sidechain
+which can interact via two-way pegs with the parent decentralized chain. The
+regulators can then apply the laws they desire on both intra-chain transactions
+within the private blockchain as well as the cross-chain transfers between their
+private blockchain and the decentralized parent blockchain. Such regulation
+could, for instance, allow only white-listed entities to interact with the
+system, or require a bank or government to sign off every transaction using
+centrally held private keys. However, regulation concerning the decentralized
+parent blockchain would remain unenforceable at the transaction level. As such,
+moving assets from the decentralized blockchain into the regulated blockchain
+would happen on a voluntary basis if a party deemed that it wishes to encumber
+itself with a particular legal and regulatory framework.
+
+\noindent
+\textbf{Upgradability. } Sidechains also allow for upgradability, taking the
+place of difficult to manage hard forks. After all, this was their original
+purpose when they were envisioned~\cite{sidechains}. In the upgradability
+application, a child blockchain is created to provide supplemental features to
+an existing parent blockchain. Using two-way pegs, the two blockchains can
+transfer assets between them on a voluntary basis, without requiring users to
+follow a hard fork or soft fork contrary to their will. If eventually the child
+chain becomes more popular than the parent blockchain, the parent blockchain can
+eventually be sunset, completing the upgrade process. This technique can also be
+used to \emph{abandon ship} in case a parent blockchain is found to have a
+long-term security issue which cannot be immediately exploited, such as a
+suspicion for a cryptographically secure hash weakness. If enough time is
+available to create a sidechain and have users move all their assets to it, this
+method allows securely moving away from a suspected insecure system. In this
+case, the two-way peg could be carefully constructed to have a time limited
+after which no more funds can further be transferred from the parent blockchain
+into the child blockchain, effectively severing the link between the two and
+making the child blockchain independent.
+
+% TODO: evaluation using Giorgos' work
