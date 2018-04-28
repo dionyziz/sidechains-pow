@@ -19,18 +19,17 @@
                 \Let{\textsf{ctr}}{\textsf{ctr} + 1}
                 \State{\textsf{emit}
                        \textsf{Deposited}$_1$(\textsf{target},
-                                              \textsf{msg.sender},
                                               \textsf{msg.value},
                                               \textsf{ctr})}
             \EndPayable
-            \Function{\sf withdraw}{$\textsf{valid}, \textsf{amount}, \textsf{target}, \textsf{ctr}$}
+            \Function{\sf withdraw}{$\textsf{amount}, \textsf{target}, \textsf{ctr}$}
                 \CommentLine{Validate that event took place on remote chain}
                 \If{$\lnot
                          \textsf{event-exists}(
                              (
                                 \textsf{sidechain}_2,
                                 \textsf{Deposited}_2,
-                                (\textsf{valid}, \textsf{amount}, \textsf{target}, \textsf{ctr})
+                                (\textsf{amount}, \textsf{target}, \textsf{ctr})
                              )
                          )$}
                     \State\Return{$\bot$}
@@ -69,18 +68,17 @@
                 \Let{\textsf{ctr}}{\textsf{ctr} + 1}
                 \State{\textsf{emit}
                        \textsf{Deposited}$_2$(\textsf{target},
-                                              \textsf{msg.sender},
                                               \textsf{amount},
                                               \textsf{ctr})}
             \EndFunction
-            \Function{\sf withdraw}{$\textsf{valid}, \textsf{amount}, \textsf{target}, \textsf{ctr}$}
+            \Function{\sf withdraw}{$\textsf{amount}, \textsf{target}, \textsf{ctr}$}
                 \CommentLine{Validate that event took place on remote chain}
                 \If{$\lnot
                          \textsf{event-exists}(
                              (
                                 \textsf{sidechain}_1,
                                 \textsf{Deposited}_1,
-                                (\textsf{valid}, \textsf{amount}, \textsf{target}, \textsf{ctr})
+                                (\textsf{amount}, \textsf{target}, \textsf{ctr})
                              )
                          )$}
                     \State\Return{$\bot$}
