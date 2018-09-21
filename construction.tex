@@ -1,11 +1,11 @@
 \section{Construction}
-\subsection*{NIPoPoWs}
+\subsection*{Cross-chain certificates}
 For our construction, we will use a primitive called Non-Interactive Proofs of
 Proof-of-Work recently introduced by Miller et al.~\cite{nipopows}.
 Non-Interactive Proofs of Proofs-of-Work are cryptographic protocols which
 implement a \emph{prover} and a \emph{verifier}. The prover is a \emph{full
 node} on some \emph{remote blockchain} and has full access to that blockchain;
-the verifier does not have access access to that blockchain at all. However, the
+the verifier does not have access to that blockchain. However, the
 verifier has access to the genesis block $\mathcal{G}$ of the remote blockchain.
 The prover wants to convince the verifier that an \emph{event} took place in the
 remote blockchain; for instance, a smart contract method was called with certain
@@ -24,31 +24,29 @@ honest party. By comparing these proofs with each other, the verifier can
 extract a reliable truth value which corresponds to the same value it would
 deduce if it were to be itself running a full node on the remote blockchain with
 complete access to it. This property is the \emph{security} of NIPoPoWs scheme
-and was realized in~\cite{nipopows}.
+and was proven in~\cite{nipopows}.
 
-It is worth noting that, while in this paper we are interested in \emph{events},
-the original NIPoPoWs construction talks about general \emph{predicates} that
-are evaluated on blockchains. We remark that blockchain events satisfy the
-requirements that make a blockchain predicate provable within the NIPoPoWs
-framework. In particular, given a particular genesis block $\mathcal{G}$, a
-smart contract address \textsf{addr}, an event name \textsf{Event}, and
-a series of event parameter values
-$(\textsf{param}_1, \textsf{param}_2, \cdots, \textsf{param}_n)$, the predicate
-$e$ we wish to check for truth is the following: \emph{Has the event named
-\textsf{Event} been fired with parameters $(\textsf{param}_1, \textsf{param}_2,
-\cdots, \textsf{param}_n)$ by the smart contract residing in address
-\textsf{addr} on the blockchain with genesis block $\mathcal{G}$ at least $k$
-blocks ago?} This particular predicate is (1) \emph{monotonic}, meaning that it
-starts with the value \textsf{false} and, if it ever becomes \textsf{true}, it
-cannot ever change its value back as the blockchain grows; (2)
-\emph{infix-sensitive}, meaning that its truth value can be deduced by
-inspecting only a constant number of blocks on the blockchain (one block, within
-which the event firing was confirmed); and (3) \emph{stable}, meaning that, if
-one party deduces that its value is \textsf{true}, then soon enough \emph{all}
-other parties will deduce that its value is \textsf{true} (this last property is
-due to the requirement that the event be buried under $k$ blocks ensuring a
-blockchain reorganization up to $k$ blocks ago cannot affect the predicate's
-value).
+While in this paper we are interested in \emph{events}, the original NIPoPoWs
+construction talks about general \emph{predicates} evaluated on blockchains.
+Blockchain events satisfy the requirements that make a blockchain predicate
+provable within the NIPoPoWs framework. In particular, given a particular
+genesis block $\mathcal{G}$, a smart contract address \textsf{addr}, an event
+name \textsf{Event}, and a series of event parameter values $(\textsf{param}_1,
+\textsf{param}_2, \cdots, \textsf{param}_n)$, the predicate $e$ we wish to check
+for truth is the following: \emph{Has the event named \textsf{Event} been fired
+with parameters $(\textsf{param}_1, \textsf{param}_2, \cdots, \textsf{param}_n)$
+by the smart contract residing in address \textsf{addr} on the blockchain with
+genesis block $\mathcal{G}$ at least $k$ blocks ago?} This particular predicate
+is (1) \emph{monotonic}, meaning that it starts with the value \textsf{false}
+and, if it ever becomes \textsf{true}, it cannot ever change its value back as
+the blockchain grows; (2) \emph{infix-sensitive}, meaning that its truth value
+can be deduced by inspecting only a constant number of blocks on the blockchain
+(one block, within which the event firing was confirmed); and (3) \emph{stable},
+meaning that, if one party deduces that its value is \textsf{true}, then soon
+enough \emph{all} other parties will deduce that its value is \textsf{true}
+(this last property is due to the requirement that the event be buried under $k$
+blocks ensuring a blockchain reorganization up to $k$ blocks ago cannot affect
+the predicate's value).
 
 In order to determine whether an event took place, the NIPoPoW verifier function
 \textsf{verify}$^{\mathcal{G},e}_{k,m}(\mathcal{P})$ accepts the event
@@ -57,7 +55,7 @@ genesis block of the remote chain $\mathcal{G}$, as well as two security
 parameters $k$ and $m$. These security parameters can be constants specified
 when the sidechain system is created and do not need to be modified thereafter.
 The NIPoPoWs paper gives concrete value recommendations for these parameters and
-so we do not delve into that here. Subsequently, the NIPoPoWs verifier accepts a
+so we do not delve into that here. Subsequently, the NIPoPoW verifier accepts a
 set of \emph{proofs} $\mathcal{P} = \{\pi_1, \pi_2, \cdots, \pi_n\}$ which it
 compares and extracts a truth value for the predicate: Whether the event has
 taken place in the remote blockchain or not. As long as at least one
