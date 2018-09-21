@@ -63,36 +63,24 @@ in their work, in that, a macroeconomic failure in the sidechain, such as a
 security problem which could allow the violation of money supply policies, will
 not impact the mainchain. No security definitions or construction of the
 protocol were provided in this paper. However, their paper hints at the need for
-``\emph{secure SPV proofs}'' (Appendix B) in future work.
-
-We use the word \emph{sidechain} in a more general notion than in the work by
-Back et al. Our sidechains allow communication between \emph{stand
+``\emph{secure SPV proofs}'' (Appendix B) in future work (which we implement
+here). We use the word \emph{sidechain} in a more general notion than in the
+work by Back et al. Our sidechains allow communication between \emph{stand
 alone} blockchains. In our work, a blockchain is a sidechain of another chain if
 it can detect and react to events on that chain.
 
-There have been several attempts to create various cross-chain transfer
-mechanisms. Polkadot~\cite{wood2016polkadot},
-Cosmos~\cite{buchman2016tendermint}, Blockstream's Liquid and Interledger
-attempt to realize such cross-chain transfers; however, their validation relies
-on a trusted committees or federations or is underspecified.
-
-Drivechains are a trustless sidechain proposal, but they require miners of both
-the sending and the receiving chain to be aware of both networks and to maintain
-both blockchain headers fully. This can prove inefficient when a large number of
-sidechains wish to be connected to a particular mainchain, as the drivechain
-maintainers will need to be updated by a soft fork to add support for all of
-them separately and they would also need to maintain the entirety of the block
-headers in each of them. In our scheme, miners of both chains can remain fully
-unaware of the existence of other chains and remain connected only to one
-network.
-
-BTCRelay is a mechanism that allows relaying information from Bitcoin to
-Ethereum specifically. The Ethereum and Bitcoin miners do not need to maintain
-anything else than their local chain and can remain connected to their
-respective chain network only. Unlike our proposal, however, BTCRelay requires
-the retransmission of the entirety of the source blockchain headers into the
-target blockchain as smart contract parameters, an endeavour which consumes data
-linear in the side of the source blockchain. Our proposal instead only requires
-submitting parameters logarithmic in size of the source blockchain. This is
-inherited by the \emph{succinctness} property of the NIPoPoW scheme that we use,
-which gives rise to our \emph{sidechain correctness} property.
+\emph{Polkadot}~\cite{wood2016polkadot}, \emph{Tendermint},
+\emph{Cosmos}~\cite{buchman2016tendermint}, \emph{Liquid} and \emph{Interledger}
+also build cross-chain transfers. Their validation relies on a trusted
+committees or federations or is left unspecified. \emph{Drivechains} are a
+trustless sidechain proposal, but require miners of both the chains to be aware
+of both networks. In our scheme, miners remain agnostic to the existence of
+other chains and connect only to one network. \emph{BTCRelay} is a trustless
+mechanism that allows relaying information one-way from Bitcoin to Ethereum. The
+miners can remain connected to their respective chain network only. Unlike our
+proposal, BTCRelay requires the retransmission of the entirety of the source
+blockchain headers into the target blockchain, data linear in the side of the
+source blockchain. Our proposal instead only requires submitting parameters
+logarithmic in size of the source blockchain. This is inherited by the
+\emph{succinctness} property of the NIPoPoW scheme. None of the aforementioned
+constructions include proofs of security.
