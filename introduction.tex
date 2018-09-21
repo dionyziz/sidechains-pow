@@ -30,7 +30,7 @@ react to \textit{events} that take place on another blockchain without the need
 of a trusted third party.
 
 \noindent\textbf{Our contributions. } In this paper, we introduce the first
-practical construction for proof-of-work sidechains. We describe how to build
+trustless construction for proof-of-work sidechains. We describe how to build
 sidechains that support \emph{two-way pegging} and in which an asset can be
 moved from one blockchain to another while retaining its nature. We illustrate
 how to move assets by providing a high-level construction for Turing-complete
@@ -53,45 +53,28 @@ Classic. Any blockchain supporting advanced smart contracts is sufficient.
 We provide a smart contract skeleton for how to build such pegs.
 
 \noindent\textbf{Related work. }
-Sidechains were introduced as a concept by Back et al.~\cite{sidechains}. In
-their original introduction, they were presented as a mechanism for upgrading
-the Bitcoin blockchain. The upgrade mechanism proposed introducing new
-\emph{child} blockchains with a new genesis block, called
-\emph{sidechains} in this context, which act as a new version proposed for the
-protocol and which can have assets moved between them and their \emph{parent}
-blockchain, called \emph{mainchain} in this context. The asset handled by such
-sidechains is the same as the asset of the mainchain. Assets moved to the
-sidechain can be returned to the mainchain through \emph{2-way pegging}. This
-allows for upgrades, avoiding the need for hard and soft forks, as stakeholders
-can opt-in by moving their assets to the new chain. The \emph{firewall}
-property was also introduced in their work, in that, a macroeconomic failure in
-the sidechain, such as a security problem which could allow the violation of
-money supply policies, will not impact the mainchain. While these concepts were
-introduced as high-level ideas, no security definitions or instantiation of the
-protocol were provided. More importantly, a way to securely prove facts about
-the sidechain on the mainchain was not presented, as so-called \emph{secure SPV
-proofs} such as NIPoPoWs had not been invented at the time. However, the paper
-by Back et al. does hint at the direction of using a NIPoPoWs-like data
-structure for construction sidechains (Appendix B), a construction proposed at a
-high level but never made concrete.
+Sidechains were introduced as a Bitcoin upgrade mechanism by Back et
+al.~\cite{sidechains}. The upgrade mechanism proposed introducing new
+\emph{child} blockchains with a new genesis block, which implement a new version
+of the protocol. The asset handled by such sidechains is the same as the asset
+of the mainchain and can be moved between the mainchain and the sidechain
+through \emph{2-way pegging}. The \emph{firewall} property was also introduced
+in their work, in that, a macroeconomic failure in the sidechain, such as a
+security problem which could allow the violation of money supply policies, will
+not impact the mainchain. No security definitions or construction of the
+protocol were provided in this paper. However, their paper hints at the need for
+``\emph{secure SPV proofs}'' (Appendix B) in future work.
 
-We use the word \emph{sidechain} in a different notion than in that work in that
-our sidechains allow communication between potentially \emph{stand alone}
-blockchains and that two blockchains could both be a sidechain of one another.
-In our work, a blockchain is a sidechain of another chain if it can detect and
-react to events on that chain. Under that definition, a blockchain is a
-sidechain if it simply has the ability to react to events that have occurred on
-a remote chain.
+We use the word \emph{sidechain} in a more general notion than in the work by
+Back et al. Our sidechains allow communication between \emph{stand
+alone} blockchains. In our work, a blockchain is a sidechain of another chain if
+it can detect and react to events on that chain.
 
 There have been several attempts to create various cross-chain transfer
 mechanisms. Polkadot~\cite{wood2016polkadot},
 Cosmos~\cite{buchman2016tendermint}, Blockstream's Liquid and Interledger
 attempt to realize such cross-chain transfers; however, their validation relies
-on a Byzantine Fault Tolerant construction which does not allow for a fully
-trustless setting. More specifically, their implementation relies on
-\emph{trusted committees} to attest to the validity of cross-chain claims in
-which the majority of participants, by count, are assumed to be honest. Our
-scheme does not require such trust.
+on a trusted committees or federations or is underspecified.
 
 Drivechains are a trustless sidechain proposal, but they require miners of both
 the sending and the receiving chain to be aware of both networks and to maintain
