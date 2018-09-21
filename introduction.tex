@@ -1,14 +1,15 @@
 \section{Introduction}
 
-Bitcoin~\cite{bitcoin}, \cite{Nakamoto2008}, is the first and most successful \emph{cryptocurrency}
-to date. Its core protocol introduced the concept of a  \emph{blockchain}, a type of cryptographic consensus protocol in which monetary and other
+Bitcoin~\cite{bitcoin} is the first and most successful \emph{cryptocurrency}
+to date. Its core protocol introduced the concept of a  \emph{blockchain}, a type of cryptographic consensus protocol in which 
 \emph{transactions} are organized into \emph{blocks} which are then put in
-order. To achieve \emph{consensus} about their order, a
-\emph{proof-of-work}~\cite{C:DwoNao92} is included in each block. Transactions
+ a mutually agreed sequence despite the presence of adversarial nodes. Consensus is achieved via  a  
+\emph{proof-of-work}~\cite{C:DwoNao92} which is the precondition for a block to
+be valid.  Transactions
 moving value within such blockchains have been proven to be secure in that
-consensus is eventually achieved \cite{EC:GarKiaLeo15}\cite{C:GarKiaLeo17},
-solving the long-standing \emph{anonymous byzantine agreement} problem in the
-literature of distributed computing~\cite{miller2014anonymous}.
+consensus is eventually achieved, cf.  \cite{EC:GarKiaLeo15,PSS17,C:GarKiaLeo17},
+thus providing a way for reaching consensus in a setting   where 
+neither reliable point-to-point channels exists nor a public-key infrastructure. 
 
 Ethereum~\cite{buterin} extends Bitcoin's functionality and introduces the
 ability to write arbitrary code to be run on the blockchain through
@@ -25,7 +26,7 @@ third parties.
 Sidechains~\cite{sidechains} are a mechanism for cross-chain communication in
 blockchains. They allow the smart contracts on one blockchain to receive and
 react to \textit{events} that take place on another blockchain without the need
-of a trusted third party.
+of a trusted third party. Despite the widely agreed usefulness of the primitive no known constructions exist that have single points of failure. (check) 
 
 \noindent\textbf{Our contributions. } In this paper, we introduce the first
 trustless construction for proof-of-work sidechains. We describe how to build
