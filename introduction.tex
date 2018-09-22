@@ -12,17 +12,14 @@ consensus is eventually achieved \cite{EC:GarKiaLeo15}\cite{C:GarKiaLeo17},
 solving the long-standing \emph{anonymous byzantine agreement} problem in the
 literature of distributed computing~\cite{miller2014anonymous}.
 
-Ethereum~\cite{buterin} extends Bitcoin's functionality and introduces the
-ability to write arbitrary code to be run on the blockchain through
-Turing-complete \emph{smart contracts} written in programming languages such as
-Solidity. These smart contracts execute autonomously on blockchains.
-While the Ethereum Virtual Machine~\cite{wood} executing such contracts allows
-for Turing-completeness, the smart contracts are generally confined to access
-data only within the blockchain itself, such as previous transactions and
-blocks. Access to external world data requires some third party or group of
-third parties to vouch for the validity of the data~\cite{CCS:ZCCJS16},
-essentially mandating the need for the trusted third party or trusted group of
-third parties.
+Ethereum~\cite{buterin} extends Bitcoin's functionality introducing the ability
+to write arbitrary  Turing-complete \emph{smart contracts} in programming
+languages such as Solidity running on top of the Ethereum Virtual
+Machine~\cite{wood}. These contracts execute autonomously. The smart contracts
+are confined to access data only within the blockchain itself, such as previous
+transactions and blocks. Access to external world data requires some trusted
+third party or group of third parties to vouch for the validity of the
+data~\cite{CCS:ZCCJS16}.
 
 Sidechains~\cite{sidechains} are a mechanism for cross-chain communication in
 blockchains. They allow the smart contracts on one blockchain to receive and
@@ -31,26 +28,24 @@ of a trusted third party.
 
 \noindent\textbf{Our contributions. } In this paper, we introduce the first
 trustless construction for proof-of-work sidechains. We describe how to build
-sidechains that support \emph{two-way pegging} and in which an asset can be
-moved from one blockchain to another while retaining its nature. We illustrate
-how to move assets by providing a high-level construction for Turing-complete
-blockchains such as Ethereum in Solidity, and we prove our construction is
-secure under the assumption that the interoperating blockchains are secure
-individually. To our knowledge, we are the first to provide such a construction
-in full and prove its security. Our construction works across a broad range of
+generic communicaiton between blockchains. As one application, we give the
+construction of a \emph{two-way pegged} asset which can be moved from one
+blockchain to another while retaining its nature. We provide a high-level
+construction in Solidity. Our construction works across a broad range of
 blockchains requiring only two underlying properties. First, that the
 \emph{source} blockchain is a proof-of-work blockchain supporting
 Non-Interactive Proofs of Proof-of-Work (NIPoPoWs), a cryptographic primitive
 which allows constructing succinct proofs \emph{about} events which occur in a
 proof-of-work blockchain and which was recently introduced by Miller et
-al.~\cite{nipopows}. Support for NIPoPoWs can be easily introduced to practically
-any work-based cryptocurrency which uses a localized hash function to achieve
-proof-of-work, such as SHA256 as used by Bitcoin, Bitcoin Cash, Litecoin or
-ZCash. Second, that the \emph{target} blockchain is able to validate such proofs
-by, for instance, being Turing-complete, such as, e.g., Ethereum or Ethereum
-Classic. Any blockchain supporting advanced smart contracts is sufficient.
-
-We provide a smart contract skeleton for how to build such pegs.
+al.~\cite{nipopows}. Support for NIPoPoWs can be introduced to practically any
+work-based cryptocurrency such as Bitcoin, Ethereum, Bitcoin Cash, Litecoin or
+Monero without a hard or soft fork. Second, that the \emph{target} blockchain is
+able to validate such proofs by, for instance, being Turing-complete, such as,
+e.g., Ethereum or Ethereum Classic. Any blockchain supporting advanced smart
+contracts is sufficient. In the appendix, we give a formal proof of security of
+our construction by cryptographic reduction under the assumption that the
+interoperating blockchains are secure individually. To our knowledge, we are the
+first to provide such a construction in full and prove its security.
 
 \noindent\textbf{Related work. }
 Sidechains were introduced as a Bitcoin upgrade mechanism by Back et
