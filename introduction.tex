@@ -49,33 +49,27 @@ first to provide such a construction in full and prove its security.
 
 \noindent\textbf{Related work. }
 Sidechains were introduced as a Bitcoin upgrade mechanism by Back et
-al.~\cite{sidechains}. The upgrade mechanism proposed introducing new
-\emph{child} blockchains with a new genesis block, which implement a new version
-of the protocol. The asset handled by such sidechains is the same as the asset
-of the mainchain and can be moved between the mainchain and the sidechain
-through \emph{2-way pegging}. The \emph{firewall} property was also introduced
-in their work, in that, a macroeconomic failure in the sidechain, such as a
-security problem which could allow the violation of money supply policies, will
-not impact the mainchain. No security definitions or construction of the
-protocol were provided in this paper. However, their paper hints at the need for
-``\emph{secure SPV proofs}'' (Appendix B) in future work (which we implement
-here). We use the word \emph{sidechain} in a more general notion than in the
-work by Back et al. Our sidechains allow communication between \emph{stand
-alone} blockchains. In our work, a blockchain is a sidechain of another chain if
-it can detect and react to events on that chain.
+al.~\cite{sidechains}. They proposed introducing a new \emph{child} blockchain
+which implements a new protocol version, with which assets are \emph{2-way
+pegged}. The \emph{firewall} property was articulated. No security definitions
+nor a complete construction of the protocol were given. Their paper hints at the
+need for ``\emph{secure SPV proofs}'' (Appendix B) in future work, which we
+implemented here. We use the term \emph{sidechains} in a more general notion
+than in their work. Our sidechains allow communication between \emph{stand
+alone} blockchains and also convey \emph{any} information, not just transfers of
+value. In our work, a blockchain is a sidechain of another chain if it can react
+to events on that chain, and so the relationship can be symmetric.
 
 \emph{Polkadot}~\cite{wood2016polkadot}, \emph{Tendermint},
 \emph{Cosmos}~\cite{buchman2016tendermint}, \emph{Liquid} and \emph{Interledger}
 also build cross-chain transfers. Their validation relies on a trusted
-committees or federations or is left unspecified. \emph{Drivechains} are a
-trustless sidechain proposal, but require miners of both the chains to be aware
-of both networks. In our scheme, miners remain agnostic to the existence of
-other chains and connect only to one network. \emph{BTCRelay} is a trustless
-mechanism that allows relaying information one-way from Bitcoin to Ethereum. The
-miners can remain connected to their respective chain network only. Unlike our
-proposal, BTCRelay requires the retransmission of the entirety of the source
-blockchain headers into the target blockchain, data linear in the side of the
-source blockchain. Our proposal instead only requires submitting parameters
-logarithmic in size of the source blockchain. This is inherited by the
-\emph{succinctness} property of the NIPoPoW scheme. None of the aforementioned
-constructions include proofs of security.
+committees, federations or is left unspecified. \emph{Drivechains} are a
+trustless sidechain proposal, but require miners of both chains to be aware of
+both networks. In our scheme, miners remain agnostic to the existence of other
+chains and connect only to one network. \emph{BTCRelay} is a trustless mechanism
+relaying information one-way from Bitcoin to Ethereum, in which miners are
+connected to their network only. BTCRelay requires the transmission of the
+entirety of the source blockchain headers into the target blockchain. Our
+proposal only requires data logarithmic in size of the source blockchain. This
+stems from the \emph{succinctness} property of the NIPoPoW scheme. None of the
+aforementioned constructions include proofs of security.
