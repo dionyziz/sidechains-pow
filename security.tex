@@ -82,7 +82,7 @@ $\mathcal{G}_1$.
   $\textsf{events}[e].\textsf{proof}$. $\mathcal{A}^*$ now returns the proof
   $\pi$.
 
-  We will now analyze the probability of success of $\mathcal{A}^*$. Consider
+  We will now analyze the probability of success of $\mathcal{A}$. Consider
   the following (probabilistic) events:
 
   \begin{enumerate}
@@ -90,13 +90,27 @@ $\mathcal{G}_1$.
     \item $\textsc{Cert-Brk}$ that $\mathcal{A}^*$ is successful
     \item $\textsc{Per}_1$ that persistence is maintained in $\mathcal{G}_1$
     \item $\textsc{Per}_2$ that persistence is maintained in $\mathcal{G}_2$
-    \item $\textsc{Live}_1$ that liveness is maintained in $\mathcal{G}_1$
+    \item $\textsc{Live}_2$ that liveness is maintained in $\mathcal{G}_2$
+    \item $\textsc{BC}$ the union of $\textsc{Per}_1 \land \textsc{Per}_2 \land \textsc{Live}_2$
   \end{enumerate}
+
+  From total probability we obtain:
+
+  \[
+  \Pr[\textsc{SC-Brk}] = \Pr[\textsc{SC-Brk}|\textsc{BC}]\Pr[\textsc{BC}]
+                       + \Pr[\textsc{SC-Brk}|\lnot \textsc{BC}]\Pr[\lnot \textsc{BC}]
+  \]
+
+  From the honest majority assumption of $\mathcal{G}_1$, we deduce that
+  $\Pr[\lnot \textsc{Per}_1]$ and $\Pr[\lnot \textsc{Live}_1]$ are negligible,
+  and similarly from the honest majority assumption of $\mathcal{G}_2$ we deduce
+  that $\Pr[\lnot \textsc{Per}_2]$ is negligible, therefore
+  $\Pr[\lnot \textsc{BC}]$ is negligible. It now suffices to show that
+  $\Pr[\textsc{SC-Brk}|\textsc{BC}]\Pr[\textsc{BC}]$ is negligible.
 
   Suppose that $\textsc{SC-Brk}$ occurs. It follows that a (blockchain) event
   $e$ must have been adopted by $p_2$ with some NIPoPoW $\pi$, but not by $p_1$,
-  as detailed above. Suppose now that the events $\textsc{Per}_1$,
-  $\textsc{Per}_2$ and $\textsc{Live}_1$ occur.
+  as detailed above. Suppose now that $\textsc{BC}$ occurs.
 
   Because of the \emph{persistence} of $\mathcal{G}_2$, when $\pi$ was burried
   under $k$ blocks in the adopted chain of $p_2$, all honest parties in
@@ -117,19 +131,12 @@ $\mathcal{G}_1$.
   $\textsf{verify}^{e, \mathcal{G}}_{k,m}(\pi, \pi^*)$, and therefore
   \textsc{Cert-Brk} has occurred.
 
-  Putting the above together, and applying a union bound, we obtain that
+  Putting the above together, we obtain that:
 
   \[
-  \Pr[\textsc{Cert-Brk}] = \Pr[\textsc{SC-Brk}]
-                         + \Pr[\lnot \textsc{Per}_1]
-                         + \Pr[\lnot \textsc{Per}_2]
-                         + \Pr[\lnot \textsc{Live}_1]
+  \Pr[\textsc{Cert-Brk}] \geq \Pr[\textsc{SC-Brk}|\textsc{BC}]\Pr[\textsc{BC}]
   \]
 
-  From the honest majority assumption of $\mathcal{G}_1$, we deduce that
-  $\Pr[\lnot \textsc{Per}_1]$ and $\Pr[\lnot \textsc{Live}_1]$ are negligible,
-  and similarly from the honest majority assumption of $\mathcal{G}_2$ we deduce
-  that $\Pr[\lnot \textsc{Per}_2]$ is negligible. From the NIPoPoW security
-  assumption, we have that $\Pr[\textsc{Cert-Brk}]$ is negligible. Therefore,
-  $\Pr[\textsc{SC-Brk}]$ is negligible.
+  From the NIPoPoW security assumption, we have that $\Pr[\textsc{Cert-Brk}]$ is
+  negligible. Therefore, $\Pr[\textsc{SC-Brk}]$ is negligible.
 \end{proof}
