@@ -6,8 +6,8 @@
              and $m$.}
     \begin{algorithmic}[1]
         \Contract{\textsf{crosschain}$_{k,m,z}$}
-            \Internal{\sf initialize}{$\mathcal{G}$}
-                \Let{\textsf{this.}\mathcal{G}}{\mathcal{G}}
+            \Internal{\sf initialize}{$\mathcal{G}_\textsf{remote}$}
+                \Let{\mathcal{G}}{\mathcal{G}_\textsf{remote}}
             \EndInternal
             \Payable{\sf submit-event-proof}{$\pi$, $e$}
                 \If{$\textsf{msg.value} < z$}
