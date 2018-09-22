@@ -163,6 +163,15 @@ verification algorithm concludes that the original proof was fraudulent, the
 tentatively accepted event is abandoned and the collateral is paid to the
 contester.
 
+\begin{figure}[H]
+    \caption{A sequence diagram showing the actions of the untrusted SPV node
+             when communicating with both blockchain networks and the lifecycle
+             of an event submission}
+    \centering
+    \includegraphics[width=0.85 \columnwidth,keepaspectratio]{figures/sequence-diagram.pdf}
+    \label{fig.sequence}
+\end{figure}
+
 Otherwise, when the contestation period has expired without any valid
 contestations, the author can call the \textsf{finalize-event} function, passing
 the event predicate $e$. This function changes the acceptance of the event from
