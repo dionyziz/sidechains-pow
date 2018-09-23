@@ -7,7 +7,7 @@ to date. Its core protocol introduced the concept of a  \emph{blockchain}, a typ
 \emph{proof-of-work}~\cite{C:DwoNao92} which is the precondition for a block to
 be valid.  Transactions
 moving value within such blockchains have been proven to be secure in that
-consensus is eventually achieved, cf.  \cite{EC:GarKiaLeo15,PSS17,C:GarKiaLeo17},
+consensus is eventually achieved, cf.  \cite{EC:GarKiaLeo15,EC:PasSeeShe17,C:GarKiaLeo17},
 thus providing a way for reaching consensus in a setting   where 
 neither reliable point-to-point channels exists nor a public-key infrastructure. 
 
@@ -23,11 +23,11 @@ data~\cite{CCS:ZCCJS16}.
 Sidechains~\cite{sidechains} are a mechanism for cross-chain communication in
 blockchains. They allow the smart contracts on one blockchain to receive and
 react to \textit{events} that take place on another blockchain without the need
-of a trusted third party. Despite the widely agreed usefulness of the primitive no known constructions exist that have single points of failure. (check) 
+of a trusted third party. Despite the widely agreed usefulness of the primitive there exist no constructions that are decentralised and efficient at the same time. 
 
 \noindent\textbf{Our contributions. } In this paper, we introduce the first
 trustless construction for proof-of-work sidechains. We describe how to build
-generic communicaiton between blockchains. As one application, we give the
+generic communication between blockchains. As one application, we give the
 construction of a \emph{two-way pegged} asset which can be moved from one
 blockchain to another while retaining its nature. We provide a high-level
 construction in Solidity. Our construction works across a broad range of
@@ -35,14 +35,14 @@ blockchains requiring only two underlying properties. First, that the
 \emph{source} blockchain is a proof-of-work blockchain supporting
 Non-Interactive Proofs of Proof-of-Work (NIPoPoWs), a cryptographic primitive
 which allows constructing succinct proofs \emph{about} events which occur in a
-proof-of-work blockchain and which was recently introduced by Miller et
-al.~\cite{nipopows}. Support for NIPoPoWs can be introduced to practically any
+proof-of-work blockchain and which was recently introduced in~\cite{nipopows}. 
+Support for NIPoPoWs can be introduced to practically any
 work-based cryptocurrency such as Bitcoin, Ethereum, Bitcoin Cash, Litecoin or
 Monero without a hard or soft fork. Second, that the \emph{target} blockchain is
 able to validate such proofs by, for instance, being Turing-complete, such as,
 e.g., Ethereum or Ethereum Classic. Any blockchain supporting advanced smart
 contracts is sufficient. In the appendix, we give a formal proof of security of
-our construction by cryptographic reduction under the assumption that the
+our construction via reduction to NiPoPoW security under the assumption that the
 interoperating blockchains are secure individually. To our knowledge, we are the
 first to provide such a construction in full and prove its security.
 
