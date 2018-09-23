@@ -1,42 +1,33 @@
 \section{Applications and evaluation}
 
-We now describe some of the possible applications of sidechains.
+We now describe some of the possible applications of sidechains beyond the
+two-way peg.
 
 \noindent
-\textbf{Remote ICOs. } In this application, a group wants to fundraise by
-performing an ICO~\cite{ico}. They wish to sell their application tokens on a
-certain \emph{target} blockchain with some desirable features. For example,
-Ethereum Classic has a different virtual machine for code execution, which may
-be faster for certain applications. At the same time, investors who wish to
-purchase application tokens may be holding their cryptocurrency they wish to pay
-with on a different \emph{source} blockchain with some different desirable
-features. For example, historically Ethereum has been more popular than Ethereum
-Classic in storing investor funds and access to purchase Ethereum is generally
-easier. In this context, instead of trading Ethereum for Ethereum Classic, the
-investors can directly pay in Ethereum and receive their ICO tokens on the
-Ethereum Classic blockchain.
+\textbf{Remote ICOs. } A group wants to fundraise by performing an
+ICO~\cite{ico} on a certain feature-rich \emph{target} blockchain such as
+Ethereum. Investors who wish to purchase tokens are holding their cryptocurrency
+they wish to pay with on a different \emph{source} blockchain with lower
+volatility such as Bitcoin. In this context, instead of trading Bitcoin for
+Ethereum, the investors can directly pay in Bitcoin and receive their ICO tokens
+on the Ethereum blockchain. Furthermore, the value of tokens can be denominated
+in Bitcoin.
 
-The course of action would be as follows: Initially, the fundraising entity
-creates a \emph{fund raiser} smart contract on the \emph{source blockchain}, in
-our example the Ethereum blockchain. The fund raiser smart contract contains a
-payable \emph{deposit} method to which it will receive the investments in
-ether. The fundraising entity also creates a \emph{token generator} smart
-contract on the \emph{target blockchain}, in our example the Ethereum Classic
+The course of action is as follows: Initially, the fundraising entity creates a
+\emph{fund raiser} address on the \emph{source blockchain}, in our example the
+Bitcoin blockchain. The fundraising entity also creates a \emph{token generator}
+smart contract on the \emph{target blockchain}, in our example the Ethereum
 blockchain. The \emph{token generator} contract is initialized with the source
-blockchain genesis hash and the \emph{fund raiser} smart contract address; as
-such the contracts must be created in this order. The \emph{token generator}
-contract contains a \emph{withdraw} method which allows receiving the ICO
-tokens. The fundraising entity then advertises both smart contracts and allows
-investors to inspect them.
-
-An investor subsequently deposits ether into the \emph{fund raiser} smart
-contract's \emph{deposit} method. That deposit emits an event containing the
-amount deposited and a chosen target address as parameters. The investor
-subsequently generates a proof-of-proof $\pi$ for the event firing and submits
-it to the \emph{withdraw} method of the \emph{token generator} function. Upon
-verification of $\pi$, the investor receives their ICO tokens. In this sense,
-this application is a special case of a \emph{one-way peg} with some extra
-rules such as a limited timeframe or a potentially changing price.
+blockchain genesis hash and the \emph{fund raiser} address. The \emph{token
+generator} contract contains a \emph{withdraw} method which allows receiving the
+ICO tokens. The fundraising entity then advertises both the address and the
+smart contracts and allows investors to inspect them. An investor subsequently
+deposits bitcoin into the \emph{fund raiser} address. The investor subsequently
+generates a proof-of-proof $\pi$ for the deposit and submits it to the
+\emph{withdraw} method of the \emph{token generator} function. Upon verification
+of $\pi$, the investor receives their ICO tokens. This application is a special
+case of a \emph{one-way peg} with some extra rules such as a limited timeframe
+or a potentially changing price.
 
 \noindent
 \textbf{Atomic swaps. } In this application, two participants wish to exchange

@@ -1,47 +1,44 @@
-\section{Sidechain economics}
-
-\noindent
-\textbf{Macroeconomic firewalling. }
-It remained implicit in our previous constructions that assets transferred to
-and from a sidechain are \emph{macroeconomically firewalled}. In our two-way
-pegged construction, one of the two blockchains, the \emph{main chain}, was
-functioning as the blockchain in which the deposits were made in its
-\emph{native currency}. The main chain's miners and full nodes maintain a
-certain \emph{macroeconomic policy} which includes the current money supply and
-its emission rate. We note that these policies cannot be violated in case a
-contract enabled moving the asset back and forth between a remote chain. This is
-first of all necessary because the miners enforcing the policy are not aware of
-the nature of the smart contract, and so it would be impossible for the policy
-to be altered by it. However, it is worth observing the implications of this.
-Consider a remote chain in which a \emph{catastrophic failure} occurs; for
-example, its security assumption, such as the honest majority, are violated. In
-that case, the main chain's policy is protected. The reason is that the amount
-of money that can be withdrawn from the smart contract residing within the main
-chain is limited to the amount that was deposited into it (it does not hold any
-money to pay additional dues). While, in case of such failure, it is possible
-that an adversary is able to withdraw these amounts, the participants who did
-not participate in the sidechain are unaffected. This has already been observed
-in previous work~\cite{sidechains}.
-
-\noindent
-\textbf{Merged mining. }
-We have described the technical means by which two blockchains can communicate
-in a decentralized manner. Many of the applications, such as atomic swaps and
-remote ICOs, can immediately benefit from this construction, as it pertains to
-two blockchains that remain independently secure and are stand-alone. Other
-applications, such as upgradability and scalability, envision the sidechains to
-evolve as \emph{children} blockchain of the parent blockchain and not to be
-independent. In such a setting, the child chain does not have its own asset, but
-instead borrows the asset native to its parent chain. One of the central
-questions in this construction pertains to the incentives of the child chain
-miners. If mining child chain blocks does not issue a reward, participants are
-not incentivized to mine there, noting that proof-of-work is costly and that
-usage of the child chain does not require the user herself to mine on it.
-
-One approach to solve this problem which has been proposed~\cite{sidechains} is
-to allow parent chain miners to \emph{merge mine}~\cite{blockstack} on the child
-chain. % TODO
-
-\noindent
-\textbf{Fractional reserve. }
-% \cite{sidechains}
+% \section{Sidechain economics}
+%
+% \noindent
+% \textbf{Macroeconomic firewalling. }
+% It remained implicit in our previous constructions that assets transferred to
+% and from a sidechain are \emph{macroeconomically firewalled}. In our two-way
+% pegged construction, one of the two blockchains, the \emph{main chain}, was
+% functioning as the blockchain in which the deposits were made in its
+% \emph{native currency}. The main chain's miners and full nodes maintain a
+% certain \emph{macroeconomic policy} which includes the current money supply and
+% its emission rate. We note that these policies cannot be violated in case a
+% contract enabled moving the asset back and forth between a remote chain. This is
+% first of all necessary because the miners enforcing the policy are not aware of
+% the nature of the smart contract, and so it would be impossible for the policy
+% to be altered by it. However, it is worth observing the implications of this.
+% Consider a remote chain in which a \emph{catastrophic failure} occurs; for
+% example, its security assumption, such as the honest majority, are violated. In
+% that case, the main chain's policy is protected. The reason is that the amount
+% of money that can be withdrawn from the smart contract residing within the main
+% chain is limited to the amount that was deposited into it (it does not hold any
+% money to pay additional dues). While, in case of such failure, it is possible
+% that an adversary is able to withdraw these amounts, the participants who did
+% not participate in the sidechain are unaffected. This has already been observed
+% in previous work~\cite{sidechains}.
+%
+% \noindent
+% \textbf{Merged mining. }
+% We have described the technical means by which two blockchains can communicate
+% in a decentralized manner. Many of the applications, such as atomic swaps and
+% remote ICOs, can immediately benefit from this construction, as it pertains to
+% two blockchains that remain independently secure and are stand-alone. Other
+% applications, such as upgradability and scalability, envision the sidechains to
+% evolve as \emph{children} blockchain of the parent blockchain and not to be
+% independent. In such a setting, the child chain does not have its own asset, but
+% instead borrows the asset native to its parent chain. One of the central
+% questions in this construction pertains to the incentives of the child chain
+% miners. If mining child chain blocks does not issue a reward, participants are
+% not incentivized to mine there, noting that proof-of-work is costly and that
+% usage of the child chain does not require the user herself to mine on it.
+%
+% One approach to solve this problem which has been proposed~\cite{sidechains} is
+% to allow parent chain miners to \emph{merge mine}~\cite{blockstack} on the child
+% chain. % TODO
+%

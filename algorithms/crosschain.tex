@@ -3,21 +3,21 @@
              checking cross-chain proofs; the contract utilizes the NIPoPoW
              \textsf{verify} function parameterized by the event $e$, the
              remote genesis block $\mathcal{G}$ and the security parameters $k$
-             and $m$}
+             and $m$.}
     \begin{algorithmic}[1]
         \Contract{\textsf{crosschain}$_{k,m,z}$}
-            \Internal{\sf initialize}{$\mathcal{G}$}
-                \Let{\textsf{this.}\mathcal{G}}{\mathcal{G}}
+            \Internal{\sf initialize}{$\mathcal{G}_\textsf{remote}$}
+                \Let{\mathcal{G}}{\mathcal{G}_\textsf{remote}}
             \EndInternal
             \Payable{\sf submit-event-proof}{$\pi$, $e$}
                 \If{$\textsf{msg.value} < z$}
                     \Comment{Ensure sufficient collateral}
                     \State\Return{$\bot$}
                 \EndIf
-                \If{$\textsf{events}[e] = \bot \land \textsf{verify}^{e, \mathcal{G}}_{k,m}(\pi)$}
-                    \Let{\textsf{events}[e]}{\{\textsf{expire}: \textsf{block.number} + k,
-                                               \textsf{proof}: \pi,
-                                               \textsf{author}: \textsf{msg.sender}\}}
+                \If{$\textsf{events}[e] = \bot \land \textsf{verify}^{e, \mathcal{G}}_{k,m}(\{\pi\})$}
+                    \Let{\textsf{events}[e]}{\{\textsf{expire: } \textsf{block.number} + k,
+                                               \textsf{proof: } \pi,
+                                               \textsf{author: } \textsf{msg.sender}\}}
                 \EndIf
             \EndPayable
             \Function{\sf finalize-event}{e}
@@ -36,7 +36,7 @@
                      \lor \textsf{block.number} \geq \textsf{events}[e].\textsf{expire}$}
                     \State\Return{$\bot$}
                 \EndIf
-                \If{$\lnot \textsf{verify}^{e, \mathcal{G}}_{k,m}(\textsf{events}[e].\textsf{proof}, \pi)$}
+                \If{$\lnot \textsf{verify}^{e, \mathcal{G}}_{k,m}(\{\textsf{events}[e].\textsf{proof}, \pi\})$}
                     \Comment{Original proof was fraudulent}
                     \Let{\textsf{events}[e]}{\bot}
                     \State\textsf{msg.sender.send}(z)
