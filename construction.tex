@@ -1,7 +1,7 @@
 \section{Construction}
 \subsection*{Cross-chain certificates}
 For our construction, we use a primitive called Non-Interactive Proofs of
-Proof-of-Work recently introduced by Miller et al.~\cite{nipopows}.
+Proof-of-Work recently introduced in~\cite{nipopows}.
 Non-Interactive Proofs of Proofs-of-Work are cryptographic protocols which
 implement a \emph{prover} and a \emph{verifier}. The prover is a \emph{full
 node} on the \emph{source blockchain}. The verifier does not have access to
@@ -14,7 +14,7 @@ prover wishes to convince the verifier by only sending a \emph{succinct proof},
 a short string which does not grow linearly  with the size of the blockchain,
 but, rather, \emph{polylogarithmically}. The verifier must not be fooled by
 \emph{adversarial provers} who provide incorrect proofs claiming that an event
-happened while it in fact didn't, or that it didn't while it in fact did. To
+happened while    in fact didn't, or that it didn't while it in fact did. To
 withstand such attacks, the verifier accepts multiple proofs, at least one of
 which is assumed to have been honestly generated. Comparing these proofs against
 each other, the verifier extracts a reliable truth value corresponding to the
