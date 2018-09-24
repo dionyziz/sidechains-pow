@@ -196,37 +196,37 @@ blocks.
 \end{figure}
 
 \subsection*{Two-way pegged sidechains}
-Having created the generic crosschain contract, we can now build two-way pegged
-sidechains upon it.
+Having created the generic crosschain contract, we now build two-way pegged
+sidechains on top. For concreteness, we will use the example of
+transferring ether (ETH), the native currency of the Ethereum blockchain, to the
+Ethereum Classic blockchain, and back. We note that this example is arbitrary
+and for illustration. Our construction can be used between any work-based
+blockchains satisfying the prerequisites detailed above.
 
-First, we note that our purpose of retaining the nature of an asset as it moves
-from one blockchain to another is readily achieved if two-way pegging exists. To
-be more concrete, assume that we wish to move ether (ETH), the native currency
-of the Ethereum blockchain, to the Ethereum Classic blockchain. When it is moved
-to the Ethereum Classic blockchain, it will be represented as an ERC20 token
-within that blockchain. The ERC20 standard~\cite{erc20} defines an interface
-which can be implemented by smart contracts to enable holding and transferring
-custom tokens such as ICO tokens. Let's call this custom token ETH20. As long as
-it is always possible to move ETH into ETH20 and back at a one-to-one rate, the
-nature of the asset is retained as long as the asset is fungible. The economic
-reason is that the price of ETH and ETH20 on the market will necessarily be the
-same. For, if the price of ETH were to ever be above the price of ETH20 in the
-market, then one would exchange their ETH20 for ETH using sidechains and sell
-their ETH on the market instead, and vice versa.
+When ether is moved to the Ethereum Classic blockchain, it will be represented
+as an ERC20\footnote{The ERC20 standard~\cite{erc20} defines an interface
+implementable by smart contracts that enables holding and transferring custom
+fungible tokens such as ICO tokens.} token within Ethereum Classic. Let this
+custom token be called ETH20. The asset retains its nature as it moves from one
+blockchain to another if it is always possible to move ETH into ETH20 and back
+at a one-to-one rate. The economic reason is that the price of ETH and ETH20 on
+the market will necessarily be the same (with a possible small difference due to
+the fees needed for a cross-chain transfer). For, if the price of ETH were to
+ever be significantly above the price of ETH20 in the market, then a rational
+participant would exchange their ETH20 for ETH using sidechains and sell their
+ETH on the market instead, and vice versa. Hence, the two tokens are equivalent.
 
-The sidechain smart contracts are presented in Algorithm~\ref{alg.sidechain1}
-and Algorithm~\ref{alg.sidechain2}. These smart contracts both extend the
-\textsf{crosschain} smart contract described in Algorithm~\ref{alg.crosschain}.
-Furthermore, Algorithm~\ref{alg.sidechain2} also extends basic ERC20
-functionality. We assume the base ERC20 contract allows users who have positive
-balances to transfer them between each other, as is done by many popular
-implementations~\cite{openzeppelin}. Algorithm~\ref{alg.sidechain1} contains the
-\textsf{sidechain}$_1$ contract which will be instantiated on the one blockchain
-while Algorithm~\ref{alg.sidechain2} contains the \textsf{sidechain}$_2$
-contract and will be instantiated on the other. Suppose the genesis block hash
-of the first blockchain is $\mathcal{G}_1$ and of the second blockchain is
-$\mathcal{G}_2$. We will use the genesis block hash of each blockchain as its
-unique identifier.
+The sidechain smart contracts are presented in Algorithms~\ref{alg.sidechain1}
+and~\ref{alg.sidechain2}. These smart contracts both extend the
+\textsf{crosschain} smart contract of Algorithm~\ref{alg.crosschain}.
+Furthermore, Algorithm~\ref{alg.sidechain2} also inherits basic \textsf{ERC20}
+functionality which allows token owners to transfer the
+token~\cite{openzeppelin}. Algorithm~\ref{alg.sidechain1} contains the
+\textsf{sidechain}$_1$ contract which will be instantiated on Ethereum, while
+Algorithm~\ref{alg.sidechain2} contains the \textsf{sidechain}$_2$ contract and
+will be instantiated on Ethereum Classic. Suppose the genesis block hash of
+Ethereum is $\mathcal{G}_1$ and of Ethereum Classic is $\mathcal{G}_2$. We will
+use the genesis block hash of each blockchain as its unique identifier.
 
 \import{./}{algorithms/sidechain.tex}
 
