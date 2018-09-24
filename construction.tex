@@ -216,19 +216,15 @@ ever be significantly above the price of ETH20 in the market, then a rational
 participant would exchange their ETH20 for ETH using sidechains and sell their
 ETH on the market instead, and vice versa. Hence, the two tokens are equivalent.
 
-The sidechain smart contracts are presented in Algorithms~\ref{alg.sidechain1}
-and~\ref{alg.sidechain2}. These smart contracts both extend the
-\textsf{crosschain} smart contract of Algorithm~\ref{alg.crosschain}.
-Furthermore, Algorithm~\ref{alg.sidechain2} also inherits basic \textsf{ERC20}
-functionality which allows token owners to transfer the
-token~\cite{openzeppelin}. Algorithm~\ref{alg.sidechain1} contains the
-\textsf{sidechain}$_1$ contract which will be instantiated on Ethereum, while
-Algorithm~\ref{alg.sidechain2} contains the \textsf{sidechain}$_2$ contract and
-will be instantiated on Ethereum Classic. Suppose the genesis block hash of
-Ethereum is $\mathcal{G}_1$ and of Ethereum Classic is $\mathcal{G}_2$. We will
-use the genesis block hash of each blockchain as its unique identifier.
-
-\import{./}{algorithms/sidechain.tex}
+The sidechain smart contracts are presented in Algorithm~\ref{alg.sidechain}.
+These smart contracts both extend the \textsf{crosschain} smart contract of
+Algorithm~\ref{alg.crosschain}. Furthermore, \textsf{sidechain}$_2$ also
+inherits basic \textsf{ERC20} functionality which allows token owners to
+transfer the token~\cite{openzeppelin-erc20}. The \textsf{sidechain}$_1$
+contract will be instantiated on Ethereum, while the \textsf{sidechain}$_2$
+contract and will be instantiated on Ethereum Classic. Suppose the genesis block
+hash of Ethereum is $\mathcal{G}_1$ and of Ethereum Classic is $\mathcal{G}_2$.
+We will use the genesis block hash of each blockchain as its unique identifier.
 
 The two smart contracts each contain an \textsf{initialize} method which accepts
 the hash of the remote blockchain as well as the address of the remote smart
@@ -255,6 +251,8 @@ requires, the \textsf{initialize} method can only be called once. Any user
 wishing to utilize this sidechain is expected to validate that the contracts
 have been set up correctly and that \textsf{initialize} has been called with the
 appropriate parameters.
+
+\import{./}{algorithms/sidechain.tex}
 
 Following our example with Ethereum and Ethereum Classic, \textsf{sidechain}$_1$
 runs on the Ethereum blockchain and \textsf{sidechain}$_2$ runs on the Ethereum

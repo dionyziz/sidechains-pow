@@ -1,12 +1,12 @@
 \begin{algorithm}[H]
-    \caption{\label{alg.sidechain1} An asset transferring sidechain contract on
-             $\mathcal{G}_1$}
+    \caption{\label{alg.sidechain} An asset transferring contract
+             between $\mathcal{G}_1$ and $\mathcal{G}_2$}
     \begin{algorithmic}[1]
         \Contract{\textsf{sidechain}$_1$\text{ extends }\textsf{crosschain}$_{k,m,z}$}
-            \Let{\textsf{initialized}}{\emph{false}}
+            \State{$\textsf{initialized} \gets \emph{false}$;
+                   $\textsf{ctr} \gets 0$}
             \Function{\sf initialize}{$\mathcal{G}_2$, \textsf{sidechain}$_2$}
                 \If{$\lnot \textsf{initialized}$}
-                    \Let{\textsf{ctr}}{0}
                     \State\textsf{crosschain.initialize}$(\mathcal{G}_2)$
                     \Comment{Initialize with the remote chain genesis block}
                     \Let{\textsf{initialized}}{\emph{true}}
@@ -14,8 +14,8 @@
                 \EndIf
             \EndFunction
             \Payable{\sf deposit}{{\sf target}}
-                \CommentLine{Emit an event to be picked up by the remote contract}
-                \Let{\textsf{ctr}}{\textsf{ctr} + 1}
+                \CommentLine{Emit an event to be picked up by remote contract}
+                \State{$\textsf{ctr} \pluseq 1$}
                 \State{\textsf{emit}
                        \textsf{Deposited}$_1$(\textsf{target},
                                               \textsf{msg.value},
@@ -36,40 +36,30 @@
                 \State\textsf{msg.sender.send}(\textsf{amount})
             \EndFunction
         \EndContract
-        \vskip8pt
-    \end{algorithmic}
-\end{algorithm}
-\begin{algorithm}[H]
-    \caption{\label{alg.sidechain2} An asset transferring sidechain contract on
-             $\mathcal{G}_2$}
-    \begin{algorithmic}[1]
         \Contract{\textsf{sidechain}$_2$\text{ extends }\textsf{crosschain}$_{k,m,z}$; \textsf{ERC20}}
             \State\textsf{mapping}(\textsf{address} $\Rightarrow$ \textsf{int}) \textsf{balances}
-            \Let{\textsf{initialized}}{\emph{false}}
+            \State{$\textsf{initialized} \gets \emph{false}$;
+                   $\textsf{ctr} \gets 0$}
             \Function{\sf initialize}{$\mathcal{G}_1$, \textsf{sidechain}$_1$}
                 \If{$\lnot \textsf{initialized}$}
-                    \Let{\textsf{ctr}}{0}
                     \State\textsf{crosschain.initialize}$(\mathcal{G}_1)$
-                    \Comment{Initialize with the remote chain genesis block}
                     \Let{\textsf{initialized}}{\emph{true}}
                     \Let{{\sf this.sidechain}_1}{\textsf{sidechain}_1}
                 \EndIf
             \EndFunction
             \Function{\sf deposit}{{\sf target}, {\sf amount}}
-                \CommentLine{Charge account of sender}
                 \If{$\textsf{balances[msg.sender]} < \textsf{amount}$}
                     \State\Return{$\bot$}
                 \EndIf
-                \Let{\textsf{balances[msg.sender]}}{\textsf{balances[msg.sender]} - \textsf{amount}}
-                \CommentLine{Emit an event to be picked up by the remote contract}
-                \Let{\textsf{ctr}}{\textsf{ctr} + 1}
+                \State{$\textsf{balances[msg.sender]} \minuseq \textsf{amount}$}
+                \Comment{Charge account of sender}
+                \State{$\textsf{ctr} \pluseq 1$}
                 \State{\textsf{emit}
                        \textsf{Deposited}$_2$(\textsf{target},
                                               \textsf{amount},
                                               \textsf{ctr})}
             \EndFunction
             \Function{\sf withdraw}{$\textsf{amount}, \textsf{target}, \textsf{ctr}$}
-                \CommentLine{Validate that event took place on remote chain}
                 \If{$\lnot
                          \textsf{event-exists}(
                              (
@@ -80,8 +70,8 @@
                          )$}
                     \State\Return{$\bot$}
                 \EndIf
-                \CommentLine{Credit target account}
-                \Let{\textsf{balances[target]}}{\textsf{balances[target]} + \textsf{amount}}
+                \State{$\textsf{balances[target]} \pluseq \textsf{amount}$}
+                \Comment{Credit target account}
             \EndFunction
         \EndContract
         \vskip8pt
