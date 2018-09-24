@@ -1,15 +1,15 @@
 \section{Introduction}
 
 Bitcoin~\cite{bitcoin} is the first and most successful \emph{cryptocurrency}
-to date. Its core protocol introduced the concept of a  \emph{blockchain}, a type of cryptographic consensus protocol in which 
+to date. Its core protocol introduced the concept of a  \emph{blockchain}, a type of cryptographic consensus protocol in which
 \emph{transactions} are organized into \emph{blocks} which are then put in
- a mutually agreed sequence despite the presence of adversarial nodes. Consensus is achieved via  a  
+ a mutually agreed sequence despite the presence of adversarial nodes. Consensus is achieved via  a
 \emph{proof-of-work}~\cite{C:DwoNao92} which is the precondition for a block to
 be valid.  Transactions
 moving value within such blockchains have been proven to be secure in that
-consensus is eventually achieved, cf.  \cite{EC:GarKiaLeo15,EC:PasSeeShe17,C:GarKiaLeo17},
-thus providing a way for reaching consensus in a setting   where 
-neither reliable point-to-point channels exists nor a public-key infrastructure. 
+consensus is eventually achieved, cf. \cite{EC:GarKiaLeo15,EC:PasSeeShe17,C:GarKiaLeo17},
+thus providing a way for reaching consensus in a setting   where
+neither reliable point-to-point channels exists nor a public-key infrastructure.
 
 Ethereum~\cite{buterin} extends Bitcoin's functionality introducing the ability
 to write arbitrary  Turing-complete \emph{smart contracts} in programming
@@ -23,7 +23,7 @@ data~\cite{CCS:ZCCJS16}.
 Sidechains~\cite{sidechains} are a mechanism for cross-chain communication in
 blockchains. They allow the smart contracts on one blockchain to receive and
 react to \textit{events} that take place on another blockchain without the need
-of a trusted third party. Despite the widely agreed usefulness of the primitive there exist no constructions that are decentralised and efficient at the same time. 
+of a trusted third party. Despite the widely agreed usefulness of the primitive there exist no constructions that are decentralised and efficient at the same time.
 
 \noindent\textbf{Our contributions. } In this paper, we introduce the first
 trustless construction for proof-of-work sidechains. We describe how to build
@@ -35,7 +35,7 @@ blockchains requiring only two underlying properties. First, that the
 \emph{source} blockchain is a proof-of-work blockchain supporting
 Non-Interactive Proofs of Proof-of-Work (NIPoPoWs), a cryptographic primitive
 which allows constructing succinct proofs \emph{about} events which occur in a
-proof-of-work blockchain and which was recently introduced in~\cite{nipopows}. 
+proof-of-work blockchain and which was recently introduced in~\cite{nipopows}.
 Support for NIPoPoWs can be introduced to practically any
 work-based cryptocurrency such as Bitcoin, Ethereum, Bitcoin Cash, Litecoin or
 Monero without a hard or soft fork. Second, that the \emph{target} blockchain is
