@@ -28,12 +28,12 @@
                 \State\textsf{author.send}(z)
                 \Comment{Return collateral}
             \EndFunction
-            \Function{\sf submit-contesting-proof}{$\pi$, $e$}
+            \Function{\sf submit-contesting-proof}{$\pi^*$, $e$}
                 \If{$\textsf{events}[e] = \bot
                      \lor \textsf{block.number} \geq \textsf{events}[e].\textsf{expire}$}
                     \State\Return{$\bot$}
                 \EndIf
-                \If{$\lnot \textsf{verify}^{e, \mathcal{G}}_{k,m}(\{\textsf{events}[e].\textsf{proof}, \pi\})$}
+                \If{$\lnot \textsf{verify}^{e, \mathcal{G}}_{k,m}(\{\textsf{events}[e].\textsf{proof}, \pi^*\})$}
                     \Comment{Original proof was fraudulent}
                     \Let{\textsf{events}[e]}{\bot}
                     \State\textsf{msg.sender.send}(z)
