@@ -1,7 +1,6 @@
 \begin{algorithm}[H]
-    \caption{\label{alg.sidechain1} The smart contract skeleton for an
-             asset transferring sidechain on the payable side (1);
-             this contract utilizes the base \textsf{crosschain} contract}
+    \caption{\label{alg.sidechain1} An asset transferring sidechain contract on
+             $\mathcal{G}_1$}
     \begin{algorithmic}[1]
         \Contract{\textsf{sidechain}$_1$\text{ extends }\textsf{crosschain}$_{k,m,z}$}
             \Let{\textsf{initialized}}{\emph{false}}
@@ -41,10 +40,8 @@
     \end{algorithmic}
 \end{algorithm}
 \begin{algorithm}[H]
-    \caption{\label{alg.sidechain2} The smart contract skeleton for an
-             asset transferring sidechain on the ERC20 side (2);
-             this contract utilizes the base \textsf{crosschain} contract
-             as well as \textsf{ERC20} functionality}
+    \caption{\label{alg.sidechain2} An asset transferring sidechain contract on
+             $\mathcal{G}_2$}
     \begin{algorithmic}[1]
         \Contract{\textsf{sidechain}$_2$\text{ extends }\textsf{crosschain}$_{k,m,z}$; \textsf{ERC20}}
             \State\textsf{mapping}(\textsf{address} $\Rightarrow$ \textsf{int}) \textsf{balances}

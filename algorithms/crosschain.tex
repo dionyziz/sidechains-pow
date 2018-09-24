@@ -1,9 +1,6 @@
 \begin{algorithm}[H]
     \caption{\label{alg.crosschain} The smart contract skeleton that enables
-             checking cross-chain proofs; the contract utilizes the NIPoPoW
-             \textsf{verify} function parameterized by the event $e$, the
-             remote genesis block $\mathcal{G}$ and the security parameters $k$
-             and $m$.}
+             checking cross-chain proofs about events.}
     \begin{algorithmic}[1]
         \Contract{\textsf{crosschain}$_{k,m,z}$}
             \Internal{\sf initialize}{$\mathcal{G}_\textsf{remote}$}

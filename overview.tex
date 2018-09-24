@@ -26,14 +26,7 @@ contract can elect to fire an event with any name and any parameters of its
 choice by invoking the \textsc{emit} command.
 
 \begin{figure}
-    \caption{The source blockchain, pictured at the top, fires an event
-             included in the black block. The event is confirmed by being buried
-             under $k_1$ blocks in the source blockchain. The target blockchain,
-             pictured at the bottom, reacts to the event with an action included
-             in the white block. The white block is subsequently confirmed by
-             being buried under $k_2$ blocks. Arrows between blocks of the same
-             blockchain indicate authenticated ancestry. The arrow between the
-             two blockchains indicates the data transfer needed for the event.}
+    \caption{Basic information transfer between two blockchains}
     \centering
     \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/events.pdf}
     \label{fig.events}
@@ -53,7 +46,9 @@ occurs in a transaction which is included in a block within the target
 blockchain, illustrated in white. As usual, the block needs to be confirmed by
 waiting for $k_2$ blocks to be mined on top of it. It is possible that $k_1 \neq
 k_2$ because of different blockchain parameters such as a difference in block
-generation time or network synchrony.
+generation time or network synchrony. In this figure, arrows between blocks of
+the same blockchain indicate authenticated ancestry. The arrow between the two
+blockchains indicates the data transfer needed for the event.
 
 Using this basic functionality of event information exchange between
 blockchains, we can construct two-way pegged sidechains. In such a construction,

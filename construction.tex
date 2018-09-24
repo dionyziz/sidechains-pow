@@ -136,10 +136,20 @@ contract interact with \emph{multiple} remote chains. While the algorithm does
 not reflect this in order to keep complexity low, the contract can be extended
 in a straightforward manner to include multiple geneses.
 
-When an event has taken place in the remote blockchain, any source blockchain
-SPV node, the \emph{author}, can inform the \textsf{crosschain} contract about
-this fact by generating a NIPoPoW $\pi$ claiming that the predicate claiming
-event inclusion is \textsf{true} using their current view of the source
+\begin{figure}[H]
+    \caption{A sequence diagram showing the actions of the untrusted SPV node
+             when communicating with both blockchain networks and the lifecycle
+             of an event submission}
+    \centering
+    \includegraphics[width=0.9 \columnwidth,keepaspectratio]{figures/sequence-diagram.pdf}
+    \label{fig.sequence}
+\end{figure}
+
+The lifecycle of an event submission is illustrated in
+Figure~\ref{fig.sequence}. When an event has taken place in the source
+blockchain, any source blockchain SPV node, the \emph{author}, can inform the
+\textsf{crosschain} contract about this fact by generating a NIPoPoW $\pi$
+claiming that the event took place based on their current view of the source
 blockchain. This proof can then be submitted to the target blockchain by calling
 the \textsf{submit-event-proof} function and passing it the proof $\pi$ and the
 event predicate $e$. Submission of proof of a claim that a remote event has
@@ -163,15 +173,6 @@ verification algorithm concludes that the original proof was fraudulent, the
 tentatively accepted event is abandoned and the collateral is paid to the
 contester.
 
-\begin{figure}[H]
-    \caption{A sequence diagram showing the actions of the untrusted SPV node
-             when communicating with both blockchain networks and the lifecycle
-             of an event submission}
-    \centering
-    \includegraphics[width=0.85 \columnwidth,keepaspectratio]{figures/sequence-diagram.pdf}
-    \label{fig.sequence}
-\end{figure}
-
 Otherwise, when the contestation period has expired without any valid
 contestations, the author can call the \textsf{finalize-event} function, passing
 the event predicate $e$. This function changes the acceptance of the event from
@@ -182,13 +183,7 @@ permanently accepted. The lifecycle of the scheme scheme is illustrated in
 Figures~\ref{fig.contestation} and~\ref{fig.sequence}.
 
 \begin{figure}
-    \caption{The source blockchain's event included in the black box, upon
-             sufficient confirmation by $k_1$ blocks (not shown), is transmitted
-             to the target blockchain at the bottom. The target blockchain
-             includes the event \emph{tentatively} in block $1$ until a
-             contestation period of $k_2$ has passed; the event is included
-             \emph{permanently} in block $2$; subsequently, permanent inclusion
-             needs to be confirmed with $k_2$ further blocks.}
+    \caption{The target blockchain state during event submission}
     \centering
     \includegraphics[width=0.6 \columnwidth,keepaspectratio]{figures/contestation.pdf}
     \label{fig.contestation}
