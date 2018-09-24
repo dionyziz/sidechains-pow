@@ -101,13 +101,9 @@ interested in facilitating cross-chain events must be aware of both. Those
 untrusted facilitators need to maintain an SPV node on the source blockchain
 with which they generate their NIPoPoW. To broadcast their proof on the target
 blockchain, they connect to target blockchain nodes and send the transaction
-containing the NIPoPoW. Finally, an untrusted facilitator must initialize the
-target smart contract once by broadcasting a transaction on the target
-blockchain, in which the source blockchain genesis block hash is included. This
-facilitator does not need to download any block headers from any blockchain.
-Blockchain agnosticism allows users to initiate cross-chain relationships
-between different blockchains \emph{dynamically}, as long as the blockchains in
-question satisfy the above prerequisites.
+containing the NIPoPoW. Blockchain agnosticism allows users to initiate
+cross-chain relationships between different blockchains \emph{dynamically}, as
+long as the blockchains in question satisfy the above prerequisites.
 
 \subsection*{Cross-chain events}
 
