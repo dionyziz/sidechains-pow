@@ -107,30 +107,36 @@ long as the blockchains in question satisfy the above prerequisites.
 
 \subsection*{Cross-chain events}
 
-We give our \textsf{crosschain} smart contract construction in
-Algorithm~\ref{alg.crosschain}. This construction allows informing one
-blockchain about events that took place in another and will form the foundation
-for subsequent constructions which will allow cross-chain transfers of
-assets. The \textsf{crosschain} smart contract is parameterized by three
-parameters, $k, m, z$. The parameters $k$ and $m$ are the underlying security
-parameters of the NIPoPoW protocol. The value $z$ is a \emph{collateral}
-parameter, denominated in ether (or the local currency of the blockchain in
-which the execution takes place) used to incentivize honest participants to
-intervene in cases of false claims.
+We give our \textsf{crosschain} construction in Algorithm~\ref{alg.crosschain}.
+Initially, our communication will be unidirectional. In the next section, we
+will use two unidirectional channels to establish bidirectional communication.
+This smart contract runs on the target blockchain and informs it about events
+that took place in the source blockchain. It is parameterized by three
+parameters: $k$ and $m$ are the underlying security parameters of the NIPoPoW
+protocol. The value $z$ is a \emph{collateral} parameter, denominated in ether
+(or the native currency of the blockchain in which the execution takes place)
+and is used to incentivize honest participants to intervene in cases of false
+claims. The contract utilizes the NIPoPoW \textsf{verify} function parameterized
+by the event $e$, the remote genesis block $\mathcal{G}$ and the security
+parameters $k$ and $m$. We do not give an explicit implementation of
+\textsf{verify}, as it can be implemented in a straightforward manner by
+translating the pseudocode listing of~\cite{nipopows}. For our purposes, it
+suffices to treat it as a black box which, given a set of proofs, at least one
+of which is honestly generated, returns the truth value of the respective
+predicate.
 
 \import{./}{algorithms/crosschain.tex}
 
-The contract can be \emph{inherited} by other contracts that wish to adopt its
-functionality. It is used on the target blockchain and it works as follows.
-First, the \textsf{initialize} method is called, passing the \emph{hash} of the
-genesis block of the remote chain which this contract will handle. This method
-is declared \textsf{internal} and can only be called by the contract inheriting
-from it. It is intended to be called only once to configure the contract. Users
-of the contract can check that it has been configured with the correct genesis
-block by its creator prior to using it. We note that it is possible to have a
-contract interact with \emph{multiple} remote chains. While the algorithm does
-not reflect this in order to keep complexity low, the contract can be extended
-in a straightforward manner to include multiple geneses.
+The contract allows detecting remote blockchain events can be \emph{inherited}
+by other contracts that wish to adopt its functionality. It works as follows.
+First, the \textsf{initialize} method is called exactly once to configure the
+contract, passing the \emph{hash} of the genesis block of the remote chain which
+this contract will handle. This method is \textsf{internal} and can only be
+called by the contract inheriting from it. Users of the contract can check  it
+has been configured with the correct genesis block prior to using it. We note
+that, while our algorithm does not reflect this to keep complexity low, it is
+possible to have a contract interact with \emph{multiple} remote chains by
+extending it to include multiple geneses.
 
 \begin{figure}[H]
     \caption{A sequence diagram showing the actions of the untrusted SPV node
@@ -148,35 +154,39 @@ blockchain, any source blockchain SPV node, the \emph{author}, can inform the
 claiming that the event took place based on their current view of the source
 blockchain. This proof can then be submitted to the target blockchain by calling
 the \textsf{submit-event-proof} function and passing it the proof $\pi$ and the
-event predicate $e$. Submission of proof of a claim that a remote event has
-taken place must be accompanied by a collateral payment $z$. If the author
-is honest, this collateral will be returned to her later. The
+event predicate $e$. The submission is accompanied by a collateral payment $z$.
+If the author is honest, this collateral will be returned to her later. The
 \textsf{submit-event-proof} function runs the NIPoPoW \textsf{verify} algorithm
-to check that the proof $\pi$ is well-formed and that its claim is that the
+to check that the proof $\pi$ is well-formed and that it claims that the
 predicate is \textsf{true}. It then stores the proof for later use. It also
 stores the address of the \emph{author} and an \emph{expiration block number}.
 
-Upon submission of a valid proof to the \textsf{submit-event-proof} function,
-the event is considered \emph{tentatively accepted} for a period of $k$ blocks.
-This period is the \emph{contestation period} during which another party, the
-\emph{contester}, can provide a counter-proof showing that the original proof
-was fraudulent. This can be done by any party by calling the
-\textsf{submit-contesting-proof} function during the contestation period,
-passing it the contesting proof $\pi$ and the event predicate $e$. The function
-runs the NIPoPoW \textsf{verify} algorithm to compare the original proof
-$\textsf{events}[e].\textsf{proof}$ against the contesting proof $\pi$. If the
+Upon submission of a proof to the \textsf{submit-event-proof} function, the
+event is \emph{tentatively accepted} for a \emph{contestation period} of $k$
+blocks, during which any other party, the \emph{contester}, can provide a
+counter-proof showing that the original proof was fraudulent. The contester can
+call the \textsf{submit-contesting-proof} function passing it the contesting
+proof $\pi^*$ and the event predicate $e$. The function runs the NIPoPoW
+\textsf{verify} algorithm to compare the original proof
+$\textsf{events}[e].\textsf{proof}$ against the contesting proof $\pi^*$. If the
 verification algorithm concludes that the original proof was fraudulent, the
 tentatively accepted event is abandoned and the collateral is paid to the
 contester.
 
 Otherwise, when the contestation period has expired without any valid
-contestations, the author can call the \textsf{finalize-event} function, passing
-the event predicate $e$. This function changes the acceptance of the event from
-tentative to \emph{permanent} by including it in the \textsf{finalized-events}
-set and returns the collateral to the author. Finally, the \textsf{event-exists}
-function can be used by the inheriting contract to check if an event has been
-permanently accepted. The lifecycle of the scheme scheme is illustrated in
-Figures~\ref{fig.contestation} and~\ref{fig.sequence}.
+contestations, the author can call the \textsf{finalize-event} function. This
+function changes the acceptance of the event from tentative to \emph{permanent}
+by including it in the \textsf{finalized-events} set and returns the collateral
+to the author. Finally, the \textsf{event-exists} function can be used by the
+inheriting contract to check if an event has been permanently accepted. The
+target blockchain state during this execution is shown in
+Figure~\ref{fig.contestation}. The source blockchain's event included in the
+black box, upon sufficient confirmation by $k_1$ blocks (not shown), is
+transmitted to the target blockchain at the bottom. The target blockchain
+includes the event \emph{tentatively} in block $1$ until a contestation period
+of $k_2$ has passed; the event is included \emph{permanently} in block $2$;
+subsequently, permanent inclusion needs to be confirmed with $k_2$ further
+blocks.
 
 \begin{figure}
     \caption{The target blockchain state during event submission}
