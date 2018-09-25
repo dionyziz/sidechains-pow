@@ -1,15 +1,16 @@
 \section{Introduction}
 
-Bitcoin~\cite{bitcoin} is the first and most successful \emph{cryptocurrency}
-to date. Its core protocol introduced the concept of a  \emph{blockchain}, a type of cryptographic consensus protocol in which
-\emph{transactions} are organized into \emph{blocks} which are then put in
- a mutually agreed sequence despite the presence of adversarial nodes. Consensus is achieved via  a
+Bitcoin~\cite{bitcoin} is the first and most successful \emph{cryptocurrency} to
+date. Its core protocol introduced the concept of a  \emph{blockchain}, a type
+of cryptographic consensus protocol in which \emph{transactions} are organized
+into \emph{blocks} which are then put in a mutually agreed sequence despite the
+presence of adversarial nodes. Consensus is achieved via  a
 \emph{proof-of-work}~\cite{C:DwoNao92} which is the precondition for a block to
-be valid.  Transactions
-moving value within such blockchains have been proven to be secure in that
-consensus is eventually achieved, cf. \cite{EC:GarKiaLeo15,EC:PasSeeShe17,C:GarKiaLeo17},
-thus providing a way for reaching consensus in a setting   where
-neither reliable point-to-point channels exists nor a public-key infrastructure.
+be valid.  Transactions moving value within such blockchains have been proven to
+be secure in that consensus is eventually achieved, cf.
+\cite{EC:GarKiaLeo15,EC:PasSeeShe17,C:GarKiaLeo17}, thus providing a way for
+reaching consensus in a setting   where neither reliable point-to-point channels
+exists nor a public-key infrastructure.
 
 Ethereum~\cite{buterin} extends Bitcoin's functionality introducing the ability
 to write arbitrary  Turing-complete \emph{smart contracts} in programming
@@ -23,7 +24,9 @@ data~\cite{CCS:ZCCJS16}.
 Sidechains~\cite{sidechains} are a mechanism for cross-chain communication in
 blockchains. They allow the smart contracts on one blockchain to receive and
 react to \textit{events} that take place on another blockchain without the need
-of a trusted third party. Despite the widely agreed usefulness of the primitive there exist no constructions that are decentralised and efficient at the same time.
+of a trusted third party. Despite the widely agreed usefulness of the primitive
+there exist no constructions that are decentralised and efficient at the same
+time.
 
 \noindent\textbf{Our contributions. } In this paper, we introduce the first
 trustless construction for proof-of-work sidechains. We describe how to build
@@ -52,7 +55,7 @@ al.~\cite{sidechains}. They proposed introducing a new \emph{child} blockchain
 which implements a new protocol version, with which assets are \emph{2-way
 pegged}. The \emph{firewall} property was articulated. No security definitions
 nor a complete construction of the protocol were given. Their paper hints at the
-need for ``\emph{secure SPV proofs}'' (Appendix B) in future work, which we
+need for ``\emph{efficient SPV proofs}'' (Appendix B) in future work, which we
 implemented here. We use the term \emph{sidechains} in a more general notion
 than in their work. Our sidechains allow communication between \emph{stand
 alone} blockchains and also convey \emph{any} information, not just transfers of
@@ -60,15 +63,18 @@ value. In our work, a blockchain is a sidechain of another chain if it can react
 to events on that chain, and so the relationship can be symmetric.
 
 \emph{Polkadot}~\cite{wood2016polkadot}, \emph{Tendermint},
-\emph{Cosmos}~\cite{buchman2016tendermint}, \emph{Liquid} and \emph{Interledger}
-also build cross-chain transfers. Their validation relies on a trusted
-committees, federations or is left unspecified. \emph{Drivechains} are a
-trustless sidechain proposal, but require miners of both chains to be aware of
-both networks. In our scheme, miners remain agnostic to the existence of other
-chains and connect only to one network. \emph{BTCRelay} is a trustless mechanism
-relaying information one-way from Bitcoin to Ethereum, in which miners are
-connected to their network only. BTCRelay requires the transmission of the
-entirety of the source blockchain headers into the target blockchain. Our
-proposal only requires data logarithmic in size of the source blockchain. This
-stems from the \emph{succinctness} property of the NIPoPoW scheme. None of the
-aforementioned constructions include proofs of security.
+\emph{Cosmos}~\cite{buchman2016tendermint}, \emph{Liquid} and
+\emph{Interledger}~\cite{interledger} also build cross-chain transfers. Their
+validation relies on a trusted committees, federations or is left unspecified.
+\emph{Drivechains} are a sidechain proposal which requires miners of both chains
+to be aware of both networks. In our scheme, miners remain agnostic to the
+existence of other chains and connect only to one network. \emph{BTCRelay} is a
+trustless mechanism relaying information one-way from Bitcoin to Ethereum, in
+which miners are connected to their network only. BTCRelay requires the
+transmission of the entirety of the source blockchain headers into the target
+blockchain. Our proposal only requires data logarithmic in size of the source
+blockchain. This stems from the \emph{succinctness} property of the NIPoPoW
+scheme. None of the aforementioned constructions include proofs of security.
+Other related work includes Plasma~\cite{poon2017plasma},
+XCLAIM~\cite{zamyatinxclaim}, PeaceRelay, COMIT~\cite{comit}, and
+NOCUST~\cite{khalil2018nocust} and Dogethereum.
