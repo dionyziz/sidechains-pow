@@ -196,11 +196,11 @@ blocks.
 
 \subsection*{Two-way pegged sidechains}
 Having created the generic crosschain contract, we now build two-way pegged
-sidechains on top. For concreteness, we will use the example of
-transferring ether (ETH), the native currency of the Ethereum blockchain, to the
-Ethereum Classic blockchain, and back. We note that this example is arbitrary
-and for illustration. Our construction can be used between any work-based
-blockchains satisfying the prerequisites detailed above.
+sidechains on top. For concreteness, we use the example of transferring ether
+(ETH), the native currency of the Ethereum blockchain, to the Ethereum Classic
+blockchain, and back. We note that this example is arbitrary and for
+illustration. Our construction can be used between any work-based blockchains
+satisfying the prerequisites detailed above.
 
 When ether is moved to the Ethereum Classic blockchain, it will be represented
 as an ERC20 token within Ethereum Classic\footnote{The ERC20
@@ -226,11 +226,11 @@ Algorithm~\ref{alg.crosschain}. Furthermore, \textsf{sidechain}$_2$ also
 inherits basic \textsf{ERC20} functionality which allows token owners to
 transfer the token~\cite{openzeppelin-erc20}. The \textsf{sidechain}$_1$
 contract will be instantiated on Ethereum, while the \textsf{sidechain}$_2$
-contract and will be instantiated on Ethereum Classic. Suppose the genesis block
+contract will be instantiated on Ethereum Classic. Suppose the genesis block
 hash of Ethereum is $\mathcal{G}_1$ and of Ethereum Classic is $\mathcal{G}_2$.
 We will use the genesis block hash of each blockchain as its unique identifier.
 
-The two smart contracts each contain an \textsf{initialize} method which accepts
+The two smart contracts both contain an \textsf{initialize} method which accepts
 the hash of the remote blockchain as well as the address of the remote smart
 contract it will interface with. Note that, while the two genesis hashes can be
 hard-coded into the respective smart contract code itself, the remote contract
@@ -241,34 +241,31 @@ require the address of \textsf{sidechain}$_2$ to exist prior to its creation,
 and vice versa in a circular dependency. Therefore, the two contracts must first
 be created on their respective blockchain to obtain addresses, and then their
 \textsf{initialize} methods can be called to inform each contract about the
-address of the remote contract. Specifically, first the contract
-\textsf{sidechain}$_1$ is created on $\mathcal{G}_1$ to obtain its instance
-address which we will also denote \textsf{sidechain}$_1$. Then the second
-contract, \textsf{sidechain}$_2$ is created on $\mathcal{G}_2$ to obtain its
-address \textsf{sidechain}$_2$. Then, the \textsf{initialize} function of
-\textsf{sidechain}$_1$ is called, passing it $\mathcal{G}_2$ and the address
-\textsf{sidechain}$_2$. Finally, \textsf{initialize} is called on
-\textsf{sidechain}$_2$, passing it $\mathcal{G}_1$ and the address
-\textsf{sidechain}$_1$. These initialization parameters are stored by the
-respective smart contracts for future use. As the \textsf{crosschain} contract
-requires, the \textsf{initialize} method can only be called once. Any user
-wishing to utilize this sidechain is expected to validate that the contracts
-have been set up correctly and that \textsf{initialize} has been called with the
-appropriate parameters.
+address of the other. Specifically, first the contract \textsf{sidechain}$_1$ is
+created on $\mathcal{G}_1$ to obtain its instance address which we also
+denote \textsf{sidechain}$_1$. Then the second contract, \textsf{sidechain}$_2$
+is created on $\mathcal{G}_2$ to obtain its address \textsf{sidechain}$_2$.
+Then, the \textsf{initialize} function of \textsf{sidechain}$_1$ is called,
+passing it $\mathcal{G}_2$ and the address \textsf{sidechain}$_2$. Finally,
+\textsf{initialize} is called on \textsf{sidechain}$_2$, passing it
+$\mathcal{G}_1$ and the address \textsf{sidechain}$_1$. These initialization
+parameters are stored by the respective smart contracts for future use. As the
+\textsf{crosschain} contract requires, the \textsf{initialize} method can only
+be called once. Any user wishing to utilize this sidechain is expected to
+validate that the contracts have been set up correctly and that
+\textsf{initialize} has been called with the appropriate parameters.
+
+\textsf{sidechain}$_1$ contains a \textsf{deposit} function
+which is \emph{payable} in the native asset of Ethereum, ETH. When a user pays
+ETH into the \textsf{deposit} function, the funds are held by the smart contract
+and can later be used to pay parties who wish to \emph{withdraw}, an operation
+performed by calling the \textsf{withdraw} function. \textsf{sidechain}$_2$
+contains similar \textsf{deposit} and \textsf{withdraw} functions which,
+however, do not pay in the native currency of Ethereum Classic, but instead
+maintain a \textsf{balance} mapping akin to a typical ERC20 implementation. The
+balance is updated when a user deposits or withdraws.
 
 \import{./}{algorithms/sidechain.tex}
-
-Following our example with Ethereum and Ethereum Classic, \textsf{sidechain}$_1$
-runs on the Ethereum blockchain and \textsf{sidechain}$_2$ runs on the Ethereum
-Classic blockchain. \textsf{sidechain}$_1$ contains a \textsf{deposit} function
-which is \emph{payable} in the native asset of Ethereum, ETH. When a user pays
-ETH into the \textsf{deposit} function, the funds are kept by the smart contract
-and can later be used to pay parties who wish to \emph{withdraw}, an operation
-which can be performed by calling the \textsf{withdraw} function.
-\textsf{sidechain}$_2$ contains similar \textsf{deposit} and \textsf{withdraw}
-functions which, however, do not pay in the native currency of Ethereum Classic,
-but instead maintain a \textsf{balance} mapping akin to a typical ERC20
-implementation. The balance is updated when a user deposits or withdraws.
 
 Moving funds from the Ethereum blockchain into the Ethereum Classic blockchain
 works as follows. First, the user pays with ETH to call the \textsf{deposit}
