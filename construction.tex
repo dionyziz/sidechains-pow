@@ -203,14 +203,14 @@ illustration. Our construction can be used between any work-based blockchains
 satisfying the prerequisites detailed above.
 
 When ether is moved to the Ethereum Classic blockchain, it will be represented
-as an ERC20 token within Ethereum Classic\footnote{The ERC20
-standard~\cite{erc20} defines an interface implementable by smart contracts that
-enables holding and transferring custom fungible tokens such as ICO tokens.}.
-Let this custom token be called ETH20. The asset retains its nature as it moves
-from one blockchain to another if it is always possible to move ETH into ETH20
-and back at a one-to-one rate. The economic reason is that the price of ETH and
-ETH20 on the market will necessarily be the same. If the price of ETH were to
-ever be significantly above the price of ETH20 in the market, then a rational
+as an ERC20 token\footnote{The ERC20 standard~\cite{erc20} defines an interface
+implementable by smart contracts that enables holding and transferring custom
+fungible tokens such as ICO tokens.} within Ethereum Classic. Let this custom
+token be called ETH20. The asset retains its nature as it moves from one
+blockchain to another if it is always possible to move ETH into ETH20 and back
+at a one-to-one rate. The economic reason is that the price of ETH and ETH20 on
+the market will necessarily be the same. If the price of ETH were to ever be
+significantly above the price of ETH20 in the market, then a rational
 participant would exchange their ETH20 for ETH using sidechains and sell their
 ETH on the market instead, and vice versa. There can be a small discrepancy in
 the two prices which stems from two different factors: First, the fees needed
@@ -271,55 +271,53 @@ function of \textsf{sidechain}$_1$ which resides on $\mathcal{G}_1$, passing the
 \textsf{target} parameter which indicates their address in the Ethereum Classic
 blockchain that they wish to receive the money into. This call emits an event,
 \textsf{Deposited}$_1$ which contains the necessary data: the \textsf{target},
-the \textsf{amount} paid, as well as a unique counter \textsf{ctr} to allow for
-future payments of the same amount to the same target. When the event has been
-emitted and buried under $k_1$ blocks within the Ethereum blockchain, the user
-produces an Ethereum NIPoPoW $\pi_1$ about the predicate $e_1$ which claims that
-the event \textsf{Deposited}$_1$ has been emitted in blockchain $\mathcal{G}_1$
-with the particular parameters by the contract at address
-\textsf{sidechain}$_1$. We will slightly abuse notation for event predicates and
-let $e_1$ be specified by the tuple containing the contract address, event name
-and parameters $(\textsf{sidechain}_1, \textsf{Deposited}_1, (\textsf{amount},
-\textsf{target}, \textsf{ctr}))$, noting that there is an obvious correspondence
-between the two.
+the \textsf{amount} paid, as well as a nonce \textsf{ctr} to allow for future
+payments of the same amount to the same target. When the event has been emitted
+and buried under $k_1$ blocks within the Ethereum blockchain, the user produces
+an Ethereum NIPoPoW $\pi_1$ about the predicate $e_1$ which claims that the
+event \textsf{Deposited}$_1$ has been emitted in blockchain $\mathcal{G}_1$ with
+the particular parameters by the contract at address \textsf{sidechain}$_1$.
+% We
+% will slightly abuse notation for event predicates and let $e_1$ be specified by
+% the tuple containing the contract address, event name and parameters
+% $(\textsf{sidechain}_1, \textsf{Deposited}_1, (\textsf{amount}, \textsf{target},
+% \textsf{ctr}))$, noting that there is an obvious correspondence between the two.
 
 Subsequently, the user calls the \textsf{submit-event-proof} function of
 \textsf{sidechain}$_2$ (which is inherited from the \textsf{crosschain}
-contract), passing the NIPoPoW $\pi_1$ and the event predicate $e_1$, paying
+contract), passing the NIPoPoW $\pi_1$ and the event predicate $e_1$ and paying
 collateral $z$, which registers $e_1$ on \textsf{sidechain}$_2$ as tentative.
 Because the user is honest, intuitively no adversary can produce a $\pi'_1$
 which disproves their claim during the dispute period (we make this statement
 formal in the appendix), and therefore the user waits for $k_2$ blocks for the
 contestation period to expire. She then calls the \textsf{finalize-event}
 function for $e_1$ and receives back the collateral $z$, marking the event
-permanent. Finally, she calls the dual function \textsf{withdraw} of
+permanent. Finally, she calls the function \textsf{withdraw} of
 \textsf{sidechain}$_2$, passing it the same parameters that $e_1$ was issued
 with. The \textsf{withdraw} function checks that $e_1$ exists using the
 \textsf{event-exists} method, which will return \textsf{true}. The user is then
 credited with \textsf{amount} in their ETH20 balance stored in
-$\textsf{balances}[\textsf{target}]$. Note that this increment in balance
-creates brand new ETH20 tokens.
+$\textsf{balances}[\textsf{target}]$. This increment in balance creates brand
+new ETH20 tokens.
 
 \import{./}{algorithms/sidechain.tex}
 
-The user can then move around their ETH20 tokens by utilizing the functionality
-inherited by \textsf{sidechain}$_2$ from the \textsf{ERC20} contract. They can
-split, merge, transfer tokens to others, receive tokens from others, and so on.
-When some (not necessarily the same) user is ready to move some (not necessarily
-the same) amount of ETH20 from the Ethereum Classic blockchain back into ETH on
-the Ethereum blockchain, they follow the reverse procedure. Specifically, they
-call the \textsf{withdraw} function of \textsf{sidechain}$_2$ which ensures
-their ERC20 balance is sufficient, deduces the requested amount, and fires an
-event $e_2$ as before. At this point, these particular ETH20 tokens are
-destroyed by the balance deduction. Once $e_2$ is confirmed in $\mathcal{G}_2$,
-the user produces the NIPoPoW $\pi_2$ about the predicate $e_2$ which claims
-that a payment was made within $\mathcal{G}_2$. That proof is then submitted to
-\textsf{sidechain}$_1$ by calling the \textsf{submit-event-proof} and
-\textsf{finalize-event} functions as before. Last, the user calls the
-\textsf{withdraw} function of \textsf{sidechain}$_1$, which uses the
-\textsf{event-exists} function which will return \textsf{true}, finally paying
-back the user the respective amount of ETH. Because the only way to create ETH20
-tokens in \textsf{sidechain}$_2$ is by depositing ETH into
-\textsf{sidechain}$_1$, there will always exist a sufficient balance of ETH
-owned by the \textsf{sidechains}$_1$ smart contract to pay any requested
-withdrawals.
+The user can then transfer their ETH20 tokens by utilizing the functionality
+inherited from the \textsf{ERC20} contract.  When some (not necessarily the
+same) user is ready to move some (not necessarily the same) amount of ETH20 from
+the Ethereum Classic blockchain back into ETH on the Ethereum blockchain, they
+follow the reverse procedure. Specifically, they call the \textsf{withdraw}
+function of \textsf{sidechain}$_2$ which ensures their ERC20 balance is
+sufficient, deduces the requested amount, and fires an event $e_2$ as before. At
+this point, these particular ETH20 tokens are destroyed by the balance
+deduction. Once $e_2$ is confirmed in $\mathcal{G}_2$, the user produces the
+NIPoPoW $\pi_2$ about $e_2$ which claims that a payment was made within
+$\mathcal{G}_2$. That proof is then submitted to \textsf{sidechain}$_1$ by
+calling the \textsf{submit-event-proof} and \textsf{finalize-event} functions as
+before. Last, the user calls the \textsf{withdraw} function of
+\textsf{sidechain}$_1$, which uses the \textsf{event-exists} function which will
+return \textsf{true}, finally paying back the user the respective amount of ETH.
+Because the only way to create ETH20 tokens in \textsf{sidechain}$_2$ is by
+depositing ETH into \textsf{sidechain}$_1$, there will always exist a sufficient
+balance of ETH owned by the \textsf{sidechains}$_1$ smart contract to pay for
+any requested withdrawals.
