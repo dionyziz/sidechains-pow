@@ -265,8 +265,6 @@ however, do not pay in the native currency of Ethereum Classic, but instead
 maintain a \textsf{balance} mapping akin to a typical ERC20 implementation. The
 balance is updated when a user deposits or withdraws.
 
-\import{./}{algorithms/sidechain.tex}
-
 Moving funds from the Ethereum blockchain into the Ethereum Classic blockchain
 works as follows. First, the user pays with ETH to call the \textsf{deposit}
 function of \textsf{sidechain}$_1$ which resides on $\mathcal{G}_1$, passing the
@@ -291,7 +289,7 @@ contract), passing the NIPoPoW $\pi_1$ and the event predicate $e_1$, paying
 collateral $z$, which registers $e_1$ on \textsf{sidechain}$_2$ as tentative.
 Because the user is honest, intuitively no adversary can produce a $\pi'_1$
 which disproves their claim during the dispute period (we make this statement
-more concrete later), and therefore the user waits for $k_2$ blocks for the
+formal in the appendix), and therefore the user waits for $k_2$ blocks for the
 contestation period to expire. She then calls the \textsf{finalize-event}
 function for $e_1$ and receives back the collateral $z$, marking the event
 permanent. Finally, she calls the dual function \textsf{withdraw} of
@@ -302,13 +300,15 @@ credited with \textsf{amount} in their ETH20 balance stored in
 $\textsf{balances}[\textsf{target}]$. Note that this increment in balance
 creates brand new ETH20 tokens.
 
+\import{./}{algorithms/sidechain.tex}
+
 The user can then move around their ETH20 tokens by utilizing the functionality
 inherited by \textsf{sidechain}$_2$ from the \textsf{ERC20} contract. They can
-give parts of their tokens to others, receive tokens from others, and so on.
+split, merge, transfer tokens to others, receive tokens from others, and so on.
 When some (not necessarily the same) user is ready to move some (not necessarily
-the same) amount of ETH20 from the Ethereum Classic blockchain back into ETH
-on the Ethereum blockchain, they follow the reverse procedure. Specifically,
-they call the \textsf{withdraw} function of \textsf{sidechain}$_2$ which ensures
+the same) amount of ETH20 from the Ethereum Classic blockchain back into ETH on
+the Ethereum blockchain, they follow the reverse procedure. Specifically, they
+call the \textsf{withdraw} function of \textsf{sidechain}$_2$ which ensures
 their ERC20 balance is sufficient, deduces the requested amount, and fires an
 event $e_2$ as before. At this point, these particular ETH20 tokens are
 destroyed by the balance deduction. Once $e_2$ is confirmed in $\mathcal{G}_2$,
