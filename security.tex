@@ -5,9 +5,9 @@ security. As NIPoPoWs security is modelled in the Bitcoin
 Backbone Protocol~\cite{EC:GarKiaLeo15}, we work in the same model (and note
 that the same mathematical model also captures Ethereum). We assume that the
 standard results of the backbone protocol are attained, namely blockchain
-persistence and liveness. Persistence and liveness can be proved to hold with
-overwhelming probability under the honest mining majority assumption. For the
-details of that result, consult the Bitcoin Backbone
+\emph{persistence} and \emph{liveness}. Persistence and liveness can be proved
+to hold with overwhelming probability under the honest mining majority
+assumption. For the details of that result, consult the Bitcoin Backbone
 paper~\cite{EC:GarKiaLeo15}.
 
 We adopt the sidechains security definition from related work on proof-of-stake
@@ -17,9 +17,8 @@ We will show that proving, to the maintainers of a chain $\mathcal{G}_2$, that
 an event $e$ took place in chain $\mathcal{G}_1$ without it actually happening,
 can only occur if the underlying NIPoPoWs protocol is insecure. Therefore, our
 proof strategy follows the standard form of a cryptographic computational
-reduction. In our assumptions, we will make use of the \emph{persistence} and
-\emph{liveness} of $\mathcal{G}_2$ and only the \emph{persistence} of
-$\mathcal{G}_1$.
+reduction. In our assumptions, we will make use of the persistence and
+liveness of $\mathcal{G}_2$, but only the persistence of $\mathcal{G}_1$.
 
 \begin{theorem}
   Assume a secure NIPoPoWs construction. Then, under the honest majority
