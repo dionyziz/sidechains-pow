@@ -287,18 +287,17 @@ Subsequently, the user calls the \textsf{submit-event-proof} function of
 \textsf{sidechain}$_2$ (which is inherited from the \textsf{crosschain}
 contract), passing the NIPoPoW $\pi_1$ and the event predicate $e_1$ and paying
 collateral $z$, which registers $e_1$ on \textsf{sidechain}$_2$ as tentative.
-Because the user is honest, intuitively no adversary can produce a $\pi'_1$
-which disproves their claim during the dispute period (we make this statement
-formal in the appendix), and therefore the user waits for $k_2$ blocks for the
-contestation period to expire. She then calls the \textsf{finalize-event}
-function for $e_1$ and receives back the collateral $z$, marking the event
-permanent. Finally, she calls the function \textsf{withdraw} of
-\textsf{sidechain}$_2$, passing it the same parameters that $e_1$ was issued
-with. The \textsf{withdraw} function checks that $e_1$ exists using the
-\textsf{event-exists} method, which will return \textsf{true}. The user is then
-credited with \textsf{amount} in their ETH20 balance stored in
-$\textsf{balances}[\textsf{target}]$. This increment in balance creates brand
-new ETH20 tokens.
+Because the user is honest, no adversary can produce a $\pi'_1$
+which disproves their claim during the dispute period, and therefore the user
+waits for $k_2$ blocks for the contestation period to expire without any
+successful contestations. She then calls the \textsf{finalize-event} function
+for $e_1$ and receives back the collateral $z$, marking the event permanent.
+Finally, she calls the function \textsf{withdraw} of \textsf{sidechain}$_2$,
+passing it the same parameters that $e_1$ was issued with. The \textsf{withdraw}
+function checks that $e_1$ exists using the \textsf{event-exists} method, which
+will return \textsf{true}. The user is then credited with \textsf{amount} in
+their ETH20 balance stored in $\textsf{balances}[\textsf{target}]$. This
+increment in balance creates brand new ETH20 tokens.
 
 \import{./}{algorithms/sidechain.tex}
 
@@ -321,3 +320,19 @@ Because the only way to create ETH20 tokens in \textsf{sidechain}$_2$ is by
 depositing ETH into \textsf{sidechain}$_1$, there will always exist a sufficient
 balance of ETH owned by the \textsf{sidechains}$_1$ smart contract to pay for
 any requested withdrawals.
+
+Suppose now that an adversarial user makes a false claim that an event $e$ took
+place in $\mathcal{G}_1$ and posts a relevant NIPoPoW $\pi$ in $\mathcal{G}_2$.
+If an honest party is monitoring the chain $\mathcal{G}_2$ for the appearance of
+NIPoPoWs and the chain $\mathcal{G}_1$ for the firing of events, the fraudulence
+of $\pi$ will be immediately obvious to them. They can subsequently generate a
+contesting NIPoPoW $\pi^*$ providing a counter-claim that $e$ did not occur. The
+honest party will broadcast this transaction at the beginning of the
+contestation period. Due to the \emph{chain quality} of $\mathcal{G}_2$, the
+honest party will manage to include this transaction into $\mathcal{G}_2$ within
+one of the blocks before the end of the contestation period. The collateral $z$
+must be sufficient to incentivize an honest party to monitor $\mathcal{G}_1$ and
+$\mathcal{G}_2$ simultaneously, pay for transaction fees and ensure the time
+needed to generate a NIPoPoW $\pi^*$ is small as compared to block generation
+time. The argument for $\mathcal{G}_2$ is analogous. We make this security
+argument formal in the appendix.
