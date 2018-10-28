@@ -107,6 +107,8 @@ containing the NIPoPoW. Blockchain agnosticism allows users to initiate
 cross-chain relationships between different blockchains \emph{dynamically}, as
 long as the blockchains in question satisfy the above prerequisites.
 
+\import{./}{algorithms/crosschain.tex}
+
 \subsection*{Cross-chain events}
 
 We give our \textsf{crosschain} construction in Algorithm~\ref{alg.crosschain}.
@@ -125,8 +127,6 @@ can be implemented in a straightforward manner by translating the pseudocode
 listing of~\cite{nipopows}. For our purposes, it suffices to treat it as a black
 box which, given a set of proofs, at least one of which is honestly generated,
 returns the truth value of the respective predicate.
-
-\import{./}{algorithms/crosschain.tex}
 
 The contract allows detecting remote blockchain events can be \emph{inherited}
 by other contracts that wish to adopt its functionality. It works as follows.
@@ -285,6 +285,8 @@ the particular parameters by the contract at address \textsf{sidechain}$_1$.
 % $(\textsf{sidechain}_1, \textsf{Deposited}_1, (\textsf{amount}, \textsf{target},
 % \textsf{ctr}))$, noting that there is an obvious correspondence between the two.
 
+\import{./}{algorithms/sidechain.tex}
+
 Subsequently, the user calls the \textsf{submit-event-proof} function of
 \textsf{sidechain}$_2$ (which is inherited from the \textsf{crosschain}
 contract), passing the NIPoPoW $\pi_1$ and the event predicate $e_1$ and paying
@@ -300,8 +302,6 @@ function checks that $e_1$ exists using the \textsf{event-exists} method, which
 will return \textsf{true}. The user is then credited with \textsf{amount} in
 their ETH20 balance stored in $\textsf{balances}[\textsf{target}]$. This
 increment in balance creates brand new ETH20 tokens.
-
-\import{./}{algorithms/sidechain.tex}
 
 The user can then transfer their ETH20 tokens by utilizing the functionality
 inherited from the \textsf{ERC20} contract.  When some (not necessarily the
