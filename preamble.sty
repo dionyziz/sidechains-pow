@@ -122,3 +122,10 @@
 \newcommand{\minuseq}{\mathrel{-}=}
 \newcommand{\stareq}{\mathrel{*}=}
 \newcommand{\slasheq}{\mathrel{/}=}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
