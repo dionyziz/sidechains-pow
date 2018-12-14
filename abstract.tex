@@ -8,21 +8,21 @@ other applications,  allow the transfer of value from one chain to another, but
 so far  there have been no decentralized constructions.  In this paper, we put
 forth the first sidechains construction that allows communication between
 proof-of-work blockchains without trusted intermediaries. Our construction is
-generic in that it allows the passing of any information between blockchains.
-It gives  rise to two illustrative examples: the ``remote ICO,'' in which an
+generic in that it allows the passing of any information between blockchains. It
+gives  rise to two illustrative examples: the ``remote ICO,'' in which an
 investor pays in currency on one blockchain to receive tokens in another, and
 the ``two-way peg,'' in which an asset can be transferred from one chain to
 another and back. We pinpoint the features needed for two chains to communicate:
 On the source side, a proof-of-work blockchain that has been {\em interlinked},
 potentially with a velvet fork; on the destination side, a blockchain with any
 consensus mechanism that has sufficient expressibility to implement
-verification.  We model our construction mathematically and give a formal proof
-of security. In the heart of our construction, we use a recently introduced
-cryptographic primitive, Non-Interactive Proofs of Proof-of-Work (NIPoPoWs). Our
-security proof uses a standard cryptographic reduction from our new
-proof-of-work sidechains protocol to the security of NIPoPoWs, which has, in
-turn, been shown to be secure in previous work. Our working assumption is honest
-majority in each of the communicating chains. We demonstrate the feasibility of
-our construction by providing an implementation in the form of a Solidity smart
-contract.
+verification, such as smart contract support. We put forth the smart contracts
+needed to implement these sidechains and explain them in detail. We model our
+construction mathematically and give a formal proof of security. In the heart of
+our construction, we use a recently introduced cryptographic primitive,
+Non-Interactive Proofs of Proof-of-Work (NIPoPoWs). Our security proof uses a
+standard computational reduction from our new proof-of-work sidechains protocol
+to the security of NIPoPoWs, which has, in turn, been shown to be secure in
+previous work. Our working assumption is honest majority in each of the
+communicating chains.
 \end{abstract}
