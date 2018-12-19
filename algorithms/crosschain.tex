@@ -3,6 +3,8 @@
              checking cross-chain proofs about events.}
     \begin{algorithmic}[1]
         \Contract{\textsf{crosschain}$_{k,m,z}$}
+            \State{$\textsf{finalized-events} \gets \emptyset$;
+                   $\textsf{events} \gets \emptyset$}
             \Internal{\sf initialize}{$\mathcal{G}_\textsf{remote}$}
                 \Let{\mathcal{G}}{\mathcal{G}_\textsf{remote}}
             \EndInternal
