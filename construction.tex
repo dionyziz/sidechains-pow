@@ -5,24 +5,26 @@ Proof-of-Work recently introduced in~\cite{nipopows}.
 Non-Interactive Proofs of Proofs-of-Work are cryptographic protocols which
 implement a \emph{prover} and a \emph{verifier}. The prover is a \emph{full
 node} on the \emph{source blockchain}. The verifier does not have access to
-that blockchain, but knows its genesis block $\mathcal{G}$. The prover wants to
-convince the verifier that an \emph{event} took place in the source blockchain;
-for instance, a smart contract method was called with certain parameters or that
-a payment was made into a particular address. Whether such an event took place
-can easily be determined if one inspects the whole blockchain. However, the
-prover wishes to convince the verifier by only sending a \emph{succinct proof},
-a short string which does not grow linearly  with the size of the blockchain,
-but, rather, \emph{polylogarithmically}. The verifier must not be fooled by
-\emph{adversarial provers} who provide incorrect proofs claiming that an event
-happened while in fact it didn't, or that it didn't while in fact it did. To
-withstand such attacks, the verifier accepts multiple proofs, at least one of
-which is assumed to have been honestly generated (this assumption is necessary
-in standard blockchain protocols in
-general~\cite{EPRINT:KKZG15,wust2016ethereum}). Comparing these proofs against
-each other, the verifier extracts a reliable truth value corresponding to the
-same value it would deduce if it were to be running a full node on the
-blockchain itself. This property is the \emph{security} of NIPoPoWs proven
-in~\cite{nipopows}.
+that blockchain, but knows the source genesis block $\mathcal{G}$. The prover
+wants to convince the verifier that an \emph{event} took place in the source
+blockchain; for instance, a smart contract method was called with certain
+parameters or that a payment was made into a particular address. Whether such an
+event took place can easily be determined if one inspects the whole blockchain.
+However, the prover wishes to convince the verifier by only sending a
+\emph{succinct proof}, a short string which does not grow linearly  with the
+size of the source blockchain, but, rather, \emph{polylogarithmically}. The
+verifier must not be fooled by \emph{adversarial provers} who provide incorrect
+proofs claiming that an event happened while in fact it didn't, or that it
+didn't while in fact it did. These adversaries can also mine blocks, but the
+honest parties are assumed to control the majority of computational power on
+both the source and the target blockchain networks. To withstand such attacks,
+the verifier accepts multiple proofs, at least one of which is assumed to have
+been honestly generated (this assumption is necessary in standard blockchain
+protocols in general~\cite{EPRINT:KKZG15,wust2016ethereum}). Comparing these
+proofs against each other, the verifier extracts a reliable truth value
+corresponding to the same value it would deduce if it were to be running a full
+node on the blockchain itself. This property is the \emph{security} of NIPoPoWs
+proven in~\cite{nipopows}.
 
 The NIPoPoWs construction talks about \emph{predicates} evaluated on
 blockchains, but we are interested in \emph{events}. We can translate from
@@ -37,13 +39,13 @@ genesis block $\mathcal{G}$ at least $k$ blocks ago?} This predicate
 is (1) \emph{monotonic}, meaning that it starts with the value \textsf{false}
 and, if it ever becomes \textsf{true}, it cannot ever change its value back as
 the blockchain grows; (2) \emph{infix-sensitive}, meaning that its truth value
-can be deduced by inspecting a constant number of blocks on the blockchain (one
-block, within which the event firing was confirmed); and (3) \emph{stable},
-meaning that, if one party deduces that its value is \textsf{true}, then soon
-enough \emph{all} parties will deduce that its value is \textsf{true}. This last
-property stems from the requirement that the event be buried under $k$ blocks
-ensuring a blockchain reorganization up to $k$ blocks ago cannot affect the
-predicate's value.
+can be deduced by inspecting a polylogarithmically-bound number of blocks on the
+blockchain (in our case one block, within which the event firing was confirmed);
+and (3) \emph{stable}, meaning that, if one party deduces that its value is
+\textsf{true}, then soon enough \emph{all} parties will deduce that its value is
+\textsf{true}. This last property stems from the requirement that the event be
+buried under $k$ blocks ensuring a blockchain reorganization up to $k$ blocks
+ago cannot affect the predicate's value.
 
 In order to determine whether an event took place, the NIPoPoW verifier function
 \textsf{verify}$^{\mathcal{G},e}_{k,m}(\mathcal{P})$ accepts the event
@@ -301,18 +303,20 @@ passing it the same parameters that $e_1$ was issued with. The \textsf{withdraw}
 function checks that $e_1$ exists using the \textsf{event-exists} method, which
 will return \textsf{true}. The user is then credited with \textsf{amount} in
 their ETH20 balance stored in $\textsf{balances}[\textsf{target}]$. This
-increment in balance creates brand new ETH20 tokens.
+increment in balance creates brand new ETH20 tokens. The \textsf{withdraw}
+function also stores the signature of the event parameters that have been spent
+to avoid replay attacks, which is not shown here for algorithm brevity.
 
 The user can then transfer their ETH20 tokens by utilizing the functionality
 inherited from the \textsf{ERC20} contract.  When some (not necessarily the
 same) user is ready to move some (not necessarily the same) amount of ETH20 from
 the Ethereum Classic blockchain back into ETH on the Ethereum blockchain, they
-follow the reverse procedure. Specifically, they call the \textsf{withdraw}
+follow the reverse procedure: They call the \textsf{withdraw}
 function of \textsf{sidechain}$_2$ which ensures their ERC20 balance is
 sufficient, deduces the requested amount, and fires an event $e_2$ as before. At
 this point, these particular ETH20 tokens are destroyed by the balance
 deduction. Once $e_2$ is confirmed in $\mathcal{G}_2$, the user produces the
-NIPoPoW $\pi_2$ about $e_2$ which claims that a payment was made within
+NIPoPoW $\pi_2$ about $e_2$ which claims a payment was made within
 $\mathcal{G}_2$. That proof is then submitted to \textsf{sidechain}$_1$ by
 calling the \textsf{submit-event-proof} and \textsf{finalize-event} functions as
 before. Last, the user calls the \textsf{withdraw} function of
