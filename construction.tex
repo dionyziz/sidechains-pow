@@ -103,7 +103,7 @@ semantics as a proof. Additionally, miners and full nodes of the source
 blockchain do not need to be aware of the target blockchain. Only the parties
 interested in facilitating cross-chain events must be aware of both. Those
 untrusted facilitators need to maintain an SPV node on the source blockchain
-with which they generate their NIPoPoW. To broadcast their proof on the target
+about which they generate their NIPoPoW. To broadcast their proof on the target
 blockchain, they connect to target blockchain nodes and send the transaction
 containing the NIPoPoW. Blockchain agnosticism allows users to initiate
 cross-chain relationships between different blockchains \emph{dynamically}, as
@@ -130,7 +130,7 @@ listing of~\cite{nipopows}. For our purposes, it suffices to treat it as a black
 box which, given a set of proofs, at least one of which is honestly generated,
 returns the truth value of the respective predicate.
 
-The contract allows detecting remote blockchain events can be \emph{inherited}
+The contract allows detecting remote blockchain events and can be \emph{inherited}
 by other contracts that wish to adopt its functionality. It works as follows.
 First, the \textsf{initialize} method is called exactly once to configure the
 contract, passing the \emph{hash} of the genesis block of the remote chain which
@@ -247,11 +247,11 @@ be created on their respective blockchain to obtain addresses, and then their
 \textsf{initialize} methods can be called to inform each contract about the
 address of the other. Specifically, first the contract \textsf{sidechain}$_1$ is
 created on $\mathcal{G}_1$ to obtain its instance address which we also
-denote \textsf{sidechain}$_1$. Then the second contract, \textsf{sidechain}$_2$
+denote \textsf{sidechain}$_1$. Then the second contract, \textsf{sidechain}$_2$,
 is created on $\mathcal{G}_2$ to obtain its address \textsf{sidechain}$_2$.
-Then, the \textsf{initialize} function of \textsf{sidechain}$_1$ is called,
-passing it $\mathcal{G}_2$ and the address \textsf{sidechain}$_2$. Finally,
-\textsf{initialize} is called on \textsf{sidechain}$_2$, passing it
+Subsequently, the \textsf{initialize} function of \textsf{sidechain}$_1$ is
+called, passing it $\mathcal{G}_2$ and the address \textsf{sidechain}$_2$.
+Finally, \textsf{initialize} is called on \textsf{sidechain}$_2$, passing it
 $\mathcal{G}_1$ and the address \textsf{sidechain}$_1$. These initialization
 parameters are stored by the respective smart contracts for future use. As the
 \textsf{crosschain} contract requires, the \textsf{initialize} method can only
@@ -280,7 +280,8 @@ payments of the same amount to the same target. When the event has been emitted
 and buried under $k_1$ blocks within the Ethereum blockchain, the user produces
 an Ethereum NIPoPoW $\pi_1$ about the predicate $e_1$ which claims that the
 event \textsf{Deposited}$_1$ has been emitted in blockchain $\mathcal{G}_1$ with
-the particular parameters by the contract at address \textsf{sidechain}$_1$.
+the particular parameters by the contract residing at address
+\textsf{sidechain}$_1$.
 % We
 % will slightly abuse notation for event predicates and let $e_1$ be specified by
 % the tuple containing the contract address, event name and parameters
