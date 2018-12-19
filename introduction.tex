@@ -37,27 +37,36 @@ Non-Interactive Proofs of Proof-of-Work (NIPoPoWs), a cryptographic primitive
 which allows constructing succinct proofs \emph{about} events which occur in a
 proof-of-work blockchain and which was recently introduced in~\cite{nipopows}.
 Support for NIPoPoWs can be introduced to practically any
-work-based cryptocurrency such as Bitcoin, Ethereum, Bitcoin Cash, Litecoin or
-Monero without a hard or soft fork. Second, that the \emph{target} blockchain is
-able to validate such proofs by, for instance, being Turing-complete, such as,
-e.g., Ethereum or Ethereum Classic. Any blockchain supporting advanced smart
-contracts is sufficient. In the appendix, we give a formal proof of security of
-our construction via reduction to NiPoPoW security under the assumption that the
-interoperating blockchains are secure individually. To our knowledge, we are the
-first to provide such a construction in full and prove its security.
+work-based cryptocurrency such as Bitcoin and Ethereum without a hard or soft
+fork. Second, that the \emph{target} blockchain is able to validate such proofs
+through smart contracts such as, e.g., Ethereum or Ethereum
+Classic.
+\ifshort\else
+In
+the appendix, we give a formal proof of security of our construction via
+reduction to NIPoPoW security under the assumption that the interoperating
+blockchains are secure individually.
+\fi
+To our knowledge, we are the first to
+provide such a construction in
+\ifshort
+full.
+\else
+full and prove its security.
+\fi
 
 \noindent\textbf{Related work. }
 Sidechains were introduced as a Bitcoin upgrade mechanism by Back et
 al.~\cite{sidechains}. They proposed introducing a new \emph{child} blockchain
 which implements a new protocol version, with which assets are \emph{2-way
-pegged}. The \emph{firewall} property was articulated. No security definitions
-nor a complete construction of the protocol were given. Their paper hints at the
-need for ``\emph{efficient SPV proofs}'' (Appendix B) in future work, which we
-implemented here. We use the term \emph{sidechains} in a more general notion
-than in their work. Our sidechains allow communication between \emph{stand
-alone} blockchains and also convey \emph{any} information, not just transfers of
-value. In our work, a blockchain is a sidechain of another chain if it can react
-to events on that chain, and so the relationship can be symmetric.
+pegged}. The \emph{firewall} property was articulated. No complete construction
+of the protocol was given. Their paper hints at the need for ``\emph{efficient
+SPV proofs}'' (Appendix B) in future work, which we implemented here. We use the
+term \emph{sidechains} in a more general notion than in their work. Our
+sidechains allow communication between \emph{stand alone} blockchains and also
+convey \emph{any} information, not just transfers of value. In our work, a
+blockchain is a sidechain of another chain if it can react to events on that
+chain, and so the relationship can be symmetric.
 
 \emph{Polkadot}~\cite{wood2016polkadot}, \emph{Tendermint},
 \emph{Cosmos}~\cite{buchman2016tendermint}, \emph{Liquid} and
@@ -71,7 +80,11 @@ which miners are connected to their network only. BTCRelay requires the
 transmission of the entirety of the source blockchain headers into the target
 blockchain. Our proposal only requires data logarithmic in size of the source
 blockchain. This stems from the \emph{succinctness} property of the NIPoPoW
-scheme. None of the aforementioned constructions include proofs of security.
+scheme.
+\ifshort\else
+None of the aforementioned constructions include
+proofs of security.
+\fi
 Other related work includes Plasma~\cite{poon2017plasma},
 XCLAIM~\cite{zamyatinxclaim}, PeaceRelay, COMIT~\cite{comit}, and
 NOCUST~\cite{khalil2018nocust} and Dogethereum.
