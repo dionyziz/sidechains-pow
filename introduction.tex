@@ -72,15 +72,15 @@ chain, and so the relationship can be symmetric.
 \emph{Cosmos}~\cite{buchman2016tendermint}, \emph{Liquid} and
 \emph{Interledger}~\cite{interledger} also build cross-chain transfers. Their
 validation relies on a trusted committees, federations or is left unspecified.
-\emph{Drivechains} are a sidechain proposal which requires miners of both chains
-to be aware of both networks. In our scheme, miners remain agnostic to the
-existence of other chains and connect only to one network. \emph{BTCRelay} is a
-trustless mechanism relaying information one-way from Bitcoin to Ethereum, in
-which miners are connected to their network only. BTCRelay requires the
-transmission of the entirety of the source blockchain headers into the target
-blockchain. Our proposal only requires data logarithmic in size of the source
-blockchain. This stems from the \emph{succinctness} property of the NIPoPoW
-scheme.
+\emph{Drivechains} and \emph{rootstock} are sidechain proposals which require
+miners of both chains to be aware of both networks. In our scheme, miners remain
+agnostic to the existence of other chains and connect only to one network.
+\emph{BTCRelay} is a trustless mechanism relaying information one-way from
+Bitcoin to Ethereum, in which miners are connected to their network only.
+BTCRelay requires the transmission of the entirety of the source blockchain
+headers into the target blockchain. Our proposal only requires data logarithmic
+in size of the source blockchain. This stems from the \emph{succinctness}
+property of the NIPoPoW scheme.
 \ifshort\else
 None of the aforementioned constructions include
 proofs of security.
