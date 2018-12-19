@@ -294,7 +294,7 @@ Subsequently, the user calls the \textsf{submit-event-proof} function of
 \textsf{sidechain}$_2$ (which is inherited from the \textsf{crosschain}
 contract), passing the NIPoPoW $\pi_1$ and the event predicate $e_1$ and paying
 collateral $z$, which registers $e_1$ on \textsf{sidechain}$_2$ as tentative.
-Because the user is honest, no adversary can produce a $\pi'_1$
+Because the user is honest, no adversary can produce a $\pi^*_1$
 which disproves their claim during the dispute period, and therefore the user
 waits for $k_2$ blocks for the contestation period to expire without any
 successful contestations. She then calls the \textsf{finalize-event} function
