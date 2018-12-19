@@ -46,9 +46,12 @@ occurs in a transaction which is included in a block within the target
 blockchain, illustrated in white. As usual, the block needs to be confirmed by
 waiting for $k_2$ blocks to be mined on top of it. It is possible that $k_1 \neq
 k_2$ because of different blockchain parameters such as a difference in block
-generation time or network synchrony. In this figure, arrows between blocks of
+generation time or network synchrony.
+\ifshort\else
+In this figure, arrows between blocks of
 the same blockchain indicate authenticated ancestry. The arrow between the two
 blockchains indicates the data transfer needed for the event.
+\fi
 
 Using this basic functionality of event information exchange between
 blockchains, we can construct two-way pegged sidechains. In such a construction,
