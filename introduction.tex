@@ -1,30 +1,27 @@
 \section{Introduction}
 
-Bitcoin~\cite{bitcoin} is the first and most successful \emph{cryptocurrency} to
-date. Its core protocol introduced the concept of a  \emph{blockchain}, a type
+Bitcoin~\cite{bitcoin} is the most successful \emph{cryptocurrency} to
+date. It introduced \emph{blockchains}, a
 of cryptographic consensus protocol in which \emph{transactions} are organized
-into \emph{blocks} which are then put in a mutually agreed sequence despite the
-presence of adversarial nodes. Consensus is achieved via  a
-\emph{proof-of-work}~\cite{C:DwoNao92} which is the precondition for a block to
-be valid.  Transactions moving value within such blockchains have been proven to
-be secure in that consensus is eventually achieved, cf.
-\cite{EC:GarKiaLeo15,EC:PasSeeShe17,C:GarKiaLeo17}, thus providing a way for
-reaching consensus in a setting   where neither reliable point-to-point channels
-exists nor a public-key infrastructure.
+into \emph{blocks} which are put in a mutually agreed sequence despite the
+presence of adversaries. Consensus is achieved via
+\emph{proof-of-work}~\cite{C:DwoNao92} which is the precondition for block
+validity.  Transactions moving value within blockchains have been proven to
+be secure and that consensus is eventually achieved, cf.
+\cite{EC:GarKiaLeo15,EC:PasSeeShe17,C:GarKiaLeo17}.
 
-Ethereum~\cite{buterin} extends Bitcoin's functionality introducing the ability
-to write arbitrary  Turing-complete \emph{smart contracts} in programming
-languages such as Solidity running on top of the Ethereum Virtual
+Ethereum~\cite{buterin} extends Bitcoin's functionality introducing
+Turing-complete \emph{smart contracts} programmed in
+languages like Solidity which run on top of the Ethereum Virtual
 Machine~\cite{wood}. These contracts execute autonomously. The smart contracts
 are confined to access data only within the blockchain itself, such as previous
-transactions and blocks. Access to external world data requires some trusted
-third party or group of third parties to vouch for the validity of the
-data~\cite{CCS:ZCCJS16}.
+transactions and blocks. Access to external data requires a trusted
+third party or group thereof to vouch for the data validity~\cite{CCS:ZCCJS16}.
 
 Sidechains~\cite{sidechains} are a mechanism for cross-chain communication in
-blockchains. They allow the smart contracts on one blockchain to receive and
-react to \textit{events} that take place on another blockchain without the need
-of a trusted third party. Despite the widely agreed usefulness of the primitive
+blockchains. They allow smart contracts on one blockchain to receive and
+react to \textit{events} taking place on another blockchain without the need
+of trusted parties. Despite their widely agreed usefulness
 there exist no constructions that are decentralised and efficient at the same
 time.
 
