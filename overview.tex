@@ -8,6 +8,15 @@ particular \emph{target blockchain}, to which the asset is moved. In a sidechain
 setting of two blockchains that are two-way pegged, both blockchains can
 function as a source and a target blockchain for different transfers.
 
+\begin{figure}
+    \vspace{-2em}
+    \caption{Basic information transfer between two blockchains}
+    \centering
+    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/events.pdf}
+    \label{fig.events}
+    \vspace{-2em}
+\end{figure}
+
 While the motivation for the construction is to be able to move assets from one
 blockchain to another, we generalize the notion of sidechains from this strict
 setting. In general, we would like the target blockchain to be able to react to
@@ -24,13 +33,6 @@ by Solidity using the \textsf{event} type and have an \emph{event name}, a
 \emph{contract address} which fired them, as well as certain parameter values. A
 contract can elect to fire an event with any name and any parameters of its
 choice by invoking the \textsc{emit} command.
-
-\begin{figure}
-    \caption{Basic information transfer between two blockchains}
-    \centering
-    \includegraphics[width=0.7 \columnwidth,keepaspectratio]{figures/events.pdf}
-    \label{fig.events}
-\end{figure}
 
 A high-level overview of cross-chain event transmission is shown in
 Figure~\ref{fig.events}. The process is as follows. First, an event is fired in

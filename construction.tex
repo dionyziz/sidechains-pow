@@ -109,8 +109,6 @@ containing the NIPoPoW. Blockchain agnosticism allows users to initiate
 cross-chain relationships between different blockchains \emph{dynamically}, as
 long as the blockchains in question satisfy the above prerequisites.
 
-\import{./}{algorithms/crosschain.tex}
-
 \subsection*{Cross-chain events}
 
 We give our \textsf{crosschain} construction in Algorithm~\ref{alg.crosschain}.
@@ -141,14 +139,7 @@ that, while our algorithm does not reflect this to keep complexity low, it is
 possible to have a contract interact with \emph{multiple} remote chains by
 extending it to include multiple geneses.
 
-\begin{figure}[H]
-    \caption{A sequence diagram showing the actions of the untrusted SPV node
-             when communicating with both blockchain networks and the lifecycle
-             of an event submission}
-    \centering
-    \includegraphics[width=0.9 \columnwidth,keepaspectratio]{figures/sequence-diagram.pdf}
-    \label{fig.sequence}
-\end{figure}
+\import{./}{algorithms/crosschain.tex}
 
 The lifecycle of an event submission is illustrated in
 Figure~\ref{fig.sequence}. When an event has taken place in the source
@@ -163,6 +154,15 @@ If the author is honest, this collateral will be returned to her later. The
 to check that the proof $\pi$ is well-formed and that it claims that the
 predicate is \textsf{true}. It then stores the proof for later use. It also
 stores the address of the \emph{author} and an \emph{expiration block number}.
+
+\begin{figure}[H]
+    \caption{A sequence diagram showing the actions of the untrusted SPV node
+             when communicating with both blockchain networks and the lifecycle
+             of an event submission}
+    \centering
+    \includegraphics[width=0.9 \columnwidth,keepaspectratio]{figures/sequence-diagram.pdf}
+    \label{fig.sequence}
+\end{figure}
 
 Upon submission of a proof to the \textsf{submit-event-proof} function, the
 event is \emph{tentatively accepted} for a \emph{contestation period} of $k$
@@ -269,6 +269,8 @@ however, do not pay in the native currency of Ethereum Classic, but instead
 maintain a \textsf{balance} mapping akin to a typical ERC20 implementation. The
 balance is updated when a user deposits or withdraws.
 
+\import{./}{algorithms/sidechain.tex}
+
 Moving funds from the Ethereum blockchain into the Ethereum Classic blockchain
 works as follows. First, the user pays with ETH to call the \textsf{deposit}
 function of \textsf{sidechain}$_1$ which resides on $\mathcal{G}_1$, passing the
@@ -287,8 +289,6 @@ the particular parameters by the contract residing at address
 % the tuple containing the contract address, event name and parameters
 % $(\textsf{sidechain}_1, \textsf{Deposited}_1, (\textsf{amount}, \textsf{target},
 % \textsf{ctr}))$, noting that there is an obvious correspondence between the two.
-
-\import{./}{algorithms/sidechain.tex}
 
 Subsequently, the user calls the \textsf{submit-event-proof} function of
 \textsf{sidechain}$_2$ (which is inherited from the \textsf{crosschain}
