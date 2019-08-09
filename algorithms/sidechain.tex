@@ -4,7 +4,8 @@
     \begin{algorithmic}[1]
         \Contract{\textsf{sidechain}$_1$\text{ extends }\textsf{crosschain}$_{k,m,z}$}
             \State{$\textsf{initialized} \gets \emph{false}$;
-                   $\textsf{ctr} \gets 0$}
+                   $\textsf{ctr} \gets 0$;
+                   $\textsf{claimed-events} \gets \emptyset$}
             \Function{\sf initialize}{$\mathcal{G}_2$, \textsf{sidechain}$_2$}
                 \If{$\lnot \textsf{initialized}$}
                     \State\textsf{crosschain.initialize}$(\mathcal{G}_2)$
@@ -23,23 +24,22 @@
             \EndPayable
             \Function{\sf withdraw}{$\textsf{amount}, \textsf{target}, \textsf{ctr}$}
                 \CommentLine{Validate that event took place on remote chain}
-                \If{$\lnot
-                         \textsf{event-exists}(
-                             (
+                \Let{\textsf{event}}{(
                                 \textsf{sidechain}_2,
                                 \textsf{Deposited}_2,
-                                (\textsf{amount}, \textsf{target}, \textsf{ctr})
-                             )
-                         )$}
+                                (\textsf{amount}, \textsf{target}, \textsf{ctr}))}
+                \If{$\textsf{event} \in \textsf{claimed-events} \lor \lnot \textsf{event-exists}(\textsf{event})$}
                     \State\Return{$\bot$}
                 \EndIf
+                \Let{\textsf{claimed-events}}{\textsf{claimed-events} \cup \{\textsf{event}\}}
                 \State\textsf{msg.sender.send}(\textsf{amount})
             \EndFunction
         \EndContract
         \Contract{\textsf{sidechain}$_2$\text{ extends }\textsf{crosschain}$_{k,m,z}$; \textsf{ERC20}}
             \State\textsf{mapping}(\textsf{address} $\Rightarrow$ \textsf{int}) \textsf{balances}
             \State{$\textsf{initialized} \gets \emph{false}$;
-                   $\textsf{ctr} \gets 0$}
+                   $\textsf{ctr} \gets 0$;
+                   $\textsf{claimed-events} \gets \emptyset$}
             \Function{\sf initialize}{$\mathcal{G}_1$, \textsf{sidechain}$_1$}
                 \If{$\lnot \textsf{initialized}$}
                     \State\textsf{crosschain.initialize}$(\mathcal{G}_1)$
@@ -60,16 +60,14 @@
                                               \textsf{ctr})}
             \EndFunction
             \Function{\sf withdraw}{$\textsf{amount}, \textsf{target}, \textsf{ctr}$}
-                \If{$\lnot
-                         \textsf{event-exists}(
-                             (
+                \Let{\textsf{event}}{(
                                 \textsf{sidechain}_1,
                                 \textsf{Deposited}_1,
-                                (\textsf{amount}, \textsf{target}, \textsf{ctr})
-                             )
-                         )$}
+                                (\textsf{amount}, \textsf{target}, \textsf{ctr}))}
+                \If{$\textsf{event} \in \textsf{claimed-events} \lor \lnot \textsf{event-exists}(\textsf{event})$}
                     \State\Return{$\bot$}
                 \EndIf
+                \Let{\textsf{claimed-events}}{\textsf{claimed-events} \cup \{\textsf{event}\}}
                 \State{$\textsf{balances[target]} \pluseq \textsf{amount}$}
                 \Comment{Credit target account}
             \EndFunction
