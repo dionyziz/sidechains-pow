@@ -25,14 +25,14 @@
             \EndPayable
             \Function{\sf withdraw}{$\textsf{amount}, \textsf{target}, \textsf{ctr}$}
                 \CommentLine{Validate that event took place on remote chain}
-                \Let{\textsf{event}}{(
+                \Let{e}{(
                                 \textsf{sidechain}_2,
                                 \textsf{Deposited}_2,
                                 (\textsf{amount}, \textsf{target}, \textsf{ctr}))}
-                \If{$\textsf{event} \in \textsf{claimed-events} \lor \lnot \textsf{event-exists}(\textsf{event})$}
+                \If{$e \in \textsf{claimed-events} \lor \lnot \textsf{event-exists}(e)$}
                     \State\Return{$\bot$}
                 \EndIf
-                \Let{\textsf{claimed-events}}{\textsf{claimed-events} \cup \{\textsf{event}\}}
+                \Let{\textsf{claimed-events}}{\textsf{claimed-events} \cup \{e\}}
                 \State\textsf{msg.sender.send}(\textsf{amount})
             \EndFunction
         \EndContract
@@ -62,14 +62,14 @@
                                               \textsf{ctr}\plusplus)}
             \EndFunction
             \Function{\sf withdraw}{$\textsf{amount}, \textsf{target}, \textsf{ctr}$}
-                \Let{\textsf{event}}{(
+                \Let{e}{(
                                 \textsf{sidechain}_1,
                                 \textsf{Deposited}_1,
                                 (\textsf{amount}, \textsf{target}, \textsf{ctr}))}
-                \If{$\textsf{event} \in \textsf{claimed-events} \lor \lnot \textsf{event-exists}(\textsf{event})$}
+                \If{$e \in \textsf{claimed-events} \lor \lnot \textsf{event-exists}(e)$}
                     \State\Return{$\bot$}
                 \EndIf
-                \Let{\textsf{claimed-events}}{\textsf{claimed-events} \cup \{\textsf{event}\}}
+                \Let{\textsf{claimed-events}}{\textsf{claimed-events} \cup \{e\}}
                 \State{$\textsf{balances[target]} \pluseq \textsf{amount}$}
                 \Comment{Credit target account}
             \EndFunction
