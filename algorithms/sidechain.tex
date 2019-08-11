@@ -10,17 +10,18 @@
                 \If{$\lnot \textsf{initialized}$}
                     \State\textsf{crosschain.initialize}$(\mathcal{G}_2)$
                     \Comment{Initialize with the remote chain genesis block}
-                    \Let{\textsf{initialized}}{\emph{true}}
-                    \Let{{\sf this.sidechain}_2}{\textsf{sidechain}_2}
+                    \State{%
+                           $\textsf{this.sidechain}_2 \gets \textsf{sidechain}_2$;
+                           $\textsf{initialized} \gets \emph{true}$
+                    }
                 \EndIf
             \EndFunction
             \Payable{\sf deposit}{{\sf target}}
                 \CommentLine{Emit an event to be picked up by remote contract}
-                \State{$\textsf{ctr} \pluseq 1$}
                 \State{\textsf{emit}
                        \textsf{Deposited}$_1$(\textsf{target},
                                               \textsf{msg.value},
-                                              \textsf{ctr})}
+                                              \textsf{ctr}\plusplus)}
             \EndPayable
             \Function{\sf withdraw}{$\textsf{amount}, \textsf{target}, \textsf{ctr}$}
                 \CommentLine{Validate that event took place on remote chain}
@@ -43,8 +44,10 @@
             \Function{\sf initialize}{$\mathcal{G}_1$, \textsf{sidechain}$_1$}
                 \If{$\lnot \textsf{initialized}$}
                     \State\textsf{crosschain.initialize}$(\mathcal{G}_1)$
-                    \Let{\textsf{initialized}}{\emph{true}}
-                    \Let{{\sf this.sidechain}_1}{\textsf{sidechain}_1}
+                    \State{%
+                           $\textsf{this.sidechain}_1 \gets \textsf{sidechain}_1$;
+                           $\textsf{initialized} \gets \emph{true}$
+                    }
                 \EndIf
             \EndFunction
             \Function{\sf deposit}{{\sf target}, {\sf amount}}
@@ -53,11 +56,10 @@
                 \EndIf
                 \State{$\textsf{balances[msg.sender]} \minuseq \textsf{amount}$}
                 \Comment{Charge account of sender}
-                \State{$\textsf{ctr} \pluseq 1$}
                 \State{\textsf{emit}
                        \textsf{Deposited}$_2$(\textsf{target},
                                               \textsf{amount},
-                                              \textsf{ctr})}
+                                              \textsf{ctr}\plusplus)}
             \EndFunction
             \Function{\sf withdraw}{$\textsf{amount}, \textsf{target}, \textsf{ctr}$}
                 \Let{\textsf{event}}{(
