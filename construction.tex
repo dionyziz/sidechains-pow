@@ -128,6 +128,8 @@ listing of~\cite{nipopows}. For our purposes, it suffices to treat it as a black
 box which, given a set of proofs, at least one of which is honestly generated,
 returns the truth value of the respective predicate.
 
+\import{./}{algorithms/crosschain.tex}
+
 The contract allows detecting remote blockchain events and can be \emph{inherited}
 by other contracts that wish to adopt its functionality. It works as follows.
 First, the \textsf{initialize} method is called exactly once to configure the
@@ -138,8 +140,6 @@ has been configured with the correct genesis block prior to using it. We note
 that, while our algorithm does not reflect this to keep complexity low, it is
 possible to have a contract interact with \emph{multiple} remote chains by
 extending it to include multiple geneses.
-
-\import{./}{algorithms/crosschain.tex}
 
 The lifecycle of an event submission is illustrated in
 Figure~\ref{fig.sequence}. When an event has taken place in the source
@@ -259,6 +259,8 @@ be called once. Any user wishing to utilize this sidechain is expected to
 validate that the contracts have been set up correctly and that
 \textsf{initialize} has been called with the appropriate parameters.
 
+\import{./}{algorithms/sidechain.tex}
+
 \textsf{sidechain}$_1$ contains a \textsf{deposit} function
 which is \emph{payable} in the native asset of Ethereum, ETH. When a user pays
 ETH into the \textsf{deposit} function, the funds are held by the smart contract
@@ -268,8 +270,6 @@ contains similar \textsf{deposit} and \textsf{withdraw} functions which,
 however, do not pay in the native currency of Ethereum Classic, but instead
 maintain a \textsf{balance} mapping akin to a typical ERC20 implementation. The
 balance is updated when a user deposits or withdraws.
-
-\import{./}{algorithms/sidechain.tex}
 
 Moving funds from the Ethereum blockchain into the Ethereum Classic blockchain
 works as follows. First, the user pays with ETH to call the \textsf{deposit}
